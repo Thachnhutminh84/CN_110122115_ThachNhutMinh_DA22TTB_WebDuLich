@@ -1,0 +1,498 @@
+/**
+ * Header & Navigation Responsive Fix
+ * Sửa lỗi hiển thị header và menu trên mobile
+ */
+
+/* ===== RESET MOBILE MENU ISSUES ===== */
+
+/* Ẩn mobile menu mặc định - chỉ hiện khi click */
+.mobile-nav-overlay,
+.mobile-menu-container {
+    display: none !important;
+}
+
+/* Ẩn bottom nav mặc định */
+.bottom-nav {
+    display: none !important;
+}
+
+/* Ẩn FAB mặc định */
+.fab-container {
+    display: none !important;
+}
+
+/* ===== HEADER MOBILE FIX ===== */
+@media (max-width: 767px) {
+    /* Header container */
+    header,
+    .header {
+        padding: 10px 15px !important;
+    }
+
+    header .container,
+    .header .header-content,
+    header > div {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px;
+    }
+
+    /* Logo section */
+    header .logo-section,
+    .header .logo-section {
+        flex-direction: row !important;
+        align-items: center;
+        gap: 8px;
+    }
+
+    header .logo-section img,
+    .header .logo-section img {
+        height: 40px !important;
+        width: auto;
+    }
+
+    header .logo-text,
+    .header .logo-text {
+        font-size: 1rem !important;
+    }
+
+    /* Hide desktop nav on mobile */
+    header .nav-section .main-nav,
+    .header .nav-section .main-nav,
+    header nav ul,
+    .main-nav:not(.mobile-active) {
+        display: none !important;
+    }
+
+    /* Nav section */
+    header .nav-section,
+    .header .nav-section {
+        flex-direction: row !important;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* CTA buttons on mobile */
+    header .cta-button,
+    .header .cta-button {
+        padding: 8px 12px !important;
+        font-size: 0.75rem !important;
+        border-radius: 8px !important;
+    }
+
+    header .cta-button span,
+    .header .cta-button .btn-text {
+        display: none;
+    }
+
+    /* Hamburger button */
+    .hamburger-btn,
+    .mobile-menu-toggle {
+        display: flex !important;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .hamburger-line {
+        width: 22px;
+        height: 2px;
+        background: #374151;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+}
+
+/* ===== MOBILE MENU OVERLAY ===== */
+@media (max-width: 767px) {
+    /* Show mobile menu when active */
+    .mobile-nav-overlay.active {
+        display: block !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+    }
+
+    .mobile-menu-container.active {
+        display: block !important;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        max-width: 85%;
+        height: 100vh;
+        background: #1f2937;
+        z-index: 9999;
+        overflow-y: auto;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* ===== NAVIGATION BAR FIX ===== */
+@media (max-width: 767px) {
+    /* Navigation bar below header */
+    nav.bg-gradient-to-r,
+    .nav-bar {
+        padding: 8px 15px !important;
+    }
+
+    nav.bg-gradient-to-r ul,
+    .nav-bar ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px !important;
+    }
+
+    nav.bg-gradient-to-r ul li a,
+    .nav-bar ul li a {
+        padding: 8px 12px !important;
+        font-size: 0.8rem !important;
+    }
+
+    nav.bg-gradient-to-r ul li a i {
+        margin-right: 4px;
+    }
+
+    nav.bg-gradient-to-r ul li a span {
+        display: inline;
+    }
+}
+
+/* ===== HERO SECTION MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .hero,
+    .hero-section,
+    nav.relative {
+        min-height: auto !important;
+        height: auto !important;
+        padding: 30px 15px !important;
+    }
+
+    .hero h1,
+    .hero-title {
+        font-size: 1.5rem !important;
+        line-height: 1.3;
+        margin-bottom: 10px;
+    }
+
+    .hero p,
+    .hero-subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 20px;
+    }
+
+    /* Navigation cards grid */
+    .hero .grid,
+    .nav-card-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 0 10px;
+    }
+
+    /* Nav cards */
+    .nav-card > div,
+    .nav-card .bg-white\/10 {
+        padding: 15px !important;
+    }
+
+    .nav-card .text-6xl,
+    .nav-card i.text-6xl {
+        font-size: 2rem !important;
+        margin-bottom: 8px;
+    }
+
+    .nav-card h3 {
+        font-size: 1rem !important;
+        margin-bottom: 5px;
+    }
+
+    .nav-card p {
+        font-size: 0.8rem !important;
+        margin-bottom: 8px;
+    }
+
+    /* Stats grid */
+    .hero .grid-cols-2,
+    .hero .grid-cols-4,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .hero .text-4xl {
+        font-size: 1.5rem !important;
+    }
+
+    .hero .text-lg {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ===== CARDS GRID MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .grid,
+    .food-grid,
+    .attraction-grid,
+    .regular-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 15px !important;
+    }
+
+    .card,
+    .food-card,
+    .attraction-card {
+        margin-bottom: 0;
+    }
+
+    .card-image,
+    .food-card img,
+    .attraction-card .card-image {
+        height: 180px !important;
+    }
+
+    .card-content {
+        padding: 15px !important;
+    }
+
+    .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    .card-description {
+        font-size: 0.85rem !important;
+    }
+
+    .card-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card-actions .btn,
+    .card-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 15px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* ===== FILTER SECTION MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .filter-section {
+        padding: 15px !important;
+        margin: 15px !important;
+    }
+
+    .filter-tabs {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .filter-btn {
+        width: 100% !important;
+        justify-content: center;
+        padding: 12px 15px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ===== SEARCH BOX MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .search-container {
+        padding: 0 15px !important;
+        margin: 20px auto !important;
+    }
+
+    .search-wrapper,
+    .search-box {
+        flex-direction: column;
+        padding: 10px !important;
+        border-radius: 15px !important;
+    }
+
+    .search-input {
+        width: 100% !important;
+        padding: 12px 15px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+        margin-bottom: 10px;
+    }
+
+    .search-btn {
+        width: 100% !important;
+        padding: 12px !important;
+        border-radius: 10px !important;
+        justify-content: center;
+    }
+}
+
+/* ===== FOOTER MOBILE FIX ===== */
+@media (max-width: 767px) {
+    footer,
+    .footer {
+        padding: 30px 15px !important;
+    }
+
+    .footer-grid,
+    footer .grid {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+        text-align: center;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+        font-size: 1.1rem !important;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* ===== BUTTONS MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .btn,
+    button:not(.hamburger-btn):not(.mobile-menu-toggle) {
+        min-height: 44px;
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ===== MODAL MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .modal-overlay,
+    .booking-modal-overlay,
+    .restaurant-modal-overlay {
+        padding: 10px !important;
+        align-items: flex-start !important;
+    }
+
+    .modal-container,
+    .modal-content,
+    .booking-modal-content,
+    .restaurant-modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 15px !important;
+        max-height: 95vh !important;
+    }
+
+    .modal-header {
+        padding: 15px !important;
+    }
+
+    .modal-body,
+    .modal-content {
+        padding: 15px !important;
+    }
+
+    .modal-footer,
+    .modal-actions {
+        padding: 15px !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .modal-btn {
+        width: 100% !important;
+    }
+}
+
+/* ===== TABLE MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .table-responsive,
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
+    }
+
+    table {
+        min-width: 600px;
+        font-size: 0.8rem !important;
+    }
+
+    table th,
+    table td {
+        padding: 8px 10px !important;
+        white-space: nowrap;
+    }
+}
+
+/* ===== FORM MOBILE FIX ===== */
+@media (max-width: 767px) {
+    .form-row {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .form-group {
+        width: 100% !important;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100% !important;
+        padding: 12px 15px !important;
+        font-size: 16px !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* ===== HIDE DESKTOP ELEMENTS ON MOBILE ===== */
+@media (max-width: 767px) {
+    .hide-mobile,
+    .desktop-only {
+        display: none !important;
+    }
+}
+
+/* ===== SHOW MOBILE ELEMENTS ===== */
+@media (max-width: 767px) {
+    .show-mobile,
+    .mobile-only {
+        display: block !important;
+    }
+}
+
+/* ===== DESKTOP STYLES ===== */
+@media (min-width: 768px) {
+    .hamburger-btn,
+    .mobile-menu-toggle {
+        display: none !important;
+    }
+
+    .main-nav {
+        display: flex !important;
+    }
+
+    .hide-desktop,
+    .mobile-only {
+        display: none !important;
+    }
+}
