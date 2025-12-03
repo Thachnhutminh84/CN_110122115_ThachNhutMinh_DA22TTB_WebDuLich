@@ -67,6 +67,90 @@ try {
             }
             break;
 
+        case 'social_login':
+            // Đăng nhập bằng mạng xã hội (Google/Facebook)
+            $provider = isset($data['provider']) ? $data['provider'] : '';
+            $email = isset($data['email']) ? trim($data['email']) : '';
+            $fullName = isset($data['full_name']) ? trim($data['full_name']) : '';
+            
+            if (empty($email) || empty($fullName)) {
+                echo json_encode(['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin']);
+                break;
+            }
+            
+            // Kiểm tra email hợp lệ
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo json_encode(['success' => false, 'message' => 'Email không hợp lệ']);
+                break;
+            }
+            
+            // Kiểm tra user đã tồn tại chưa
+            $existingUser = $user->findByEmail($email);
+            
+            if ($existingUser) {
+                // User đã tồn tại - đăng nhập
+                $_SESSION['user_id'] = $existingUser['id'];
+                $_SESSION['username'] = $existingUser['username'];
+                $_SESSION['full_name'] = $existingUser['full_name'];
+                $_SESSION['email'] = $existingUser['email'];
+                $_SESSION['role'] = $existingUser['role'];
+                $_SESSION['logged_in'] = true;
+                $_SESSION['login_method'] = $provider;
+                
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Đăng nhập ' . ucfirst($provider) . ' thành công! Chào mừng ' . $existingUser['full_name'],
+                    'user' => [
+                        'id' => $existingUser['id'],
+                        'username' => $existingUser['username'],
+                        'full_name' => $existingUser['full_name'],
+                        'email' => $existingUser['email'],
+                        'role' => $existingUser['role']
+                    ]
+                ]);
+            } else {
+                // Tạo user mới
+                $username = explode('@', $email)[0] . '_' . substr(uniqid(), -4);
+                
+                $providerIdField = ($provider === 'google') ? 'google_id' : 'facebook_id';
+                $providerId = $provider . '_' . uniqid();
+                
+                $result = $user->createFromOAuth([
+                    'username' => $username,
+                    'email' => $email,
+                    'full_name' => $fullName,
+                    'google_id' => ($provider === 'google') ? $providerId : null,
+                    'facebook_id' => ($provider === 'facebook') ? $providerId : null,
+                    'avatar_url' => null
+                ]);
+                
+                if ($result['success']) {
+                    $_SESSION['user_id'] = $result['user_id'];
+                    $_SESSION['username'] = $username;
+                    $_SESSION['full_name'] = $fullName;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['role'] = 'user';
+                    $_SESSION['logged_in'] = true;
+                    $_SESSION['login_method'] = $provider;
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'message' => '🎉 Tài khoản mới đã được tạo! Chào mừng ' . $fullName,
+                        'is_new' => true,
+                        'user' => [
+                            'id' => $result['user_id'],
+                            'username' => $username,
+                            'full_name' => $fullName,
+                            'email' => $email,
+                            'role' => 'user'
+                        ]
+                    ]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => $result['message']]);
+                }
+            }
+            break;
+
         default:
             echo json_encode(['success' => false, 'message' => 'Action không hợp lệ']);
     }

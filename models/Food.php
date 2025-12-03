@@ -123,9 +123,55 @@ class Food {
     }
 
     /**
-     * Thêm món ăn mới
+     * Thêm món ăn mới (từ form)
      */
-    public function create() {
+    public function create($data = null) {
+        // Nếu có data truyền vào, sử dụng data đó
+        if ($data) {
+            // Tạo food_id tự động
+            $food_id = 'FOOD' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+            
+            $query = "INSERT INTO " . $this->table_name . "
+                    (food_id, name, category, description, ingredients, price_range, image_url, origin, status)
+                    VALUES
+                    (:food_id, :name, :category, :description, :ingredients, :price_range, :image_url, :origin, 'active')";
+
+            $stmt = $this->conn->prepare($query);
+
+            // Làm sạch dữ liệu
+            $name = htmlspecialchars(strip_tags($data['name'] ?? ''));
+            $category = htmlspecialchars(strip_tags($data['category'] ?? ''));
+            $description = htmlspecialchars(strip_tags($data['description'] ?? ''));
+            $ingredients = htmlspecialchars(strip_tags($data['ingredients'] ?? ''));
+            $price_range = htmlspecialchars(strip_tags($data['price'] ?? $data['price_range'] ?? ''));
+            $image_url = htmlspecialchars(strip_tags($data['image_url'] ?? ''));
+            $origin = htmlspecialchars(strip_tags($data['location'] ?? $data['origin'] ?? 'Trà Vinh'));
+
+            // Bind dữ liệu
+            $stmt->bindParam(':food_id', $food_id);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':category', $category);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':ingredients', $ingredients);
+            $stmt->bindParam(':price_range', $price_range);
+            $stmt->bindParam(':image_url', $image_url);
+            $stmt->bindParam(':origin', $origin);
+
+            if ($stmt->execute()) {
+                return [
+                    'success' => true,
+                    'message' => 'Thêm món ăn thành công!',
+                    'food_id' => $food_id
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => 'Không thể thêm món ăn'
+            ];
+        }
+        
+        // Sử dụng properties của object
         $query = "INSERT INTO " . $this->table_name . "
                 SET
                     food_id = :food_id,

@@ -7,6 +7,10 @@ session_start();
 require_once 'config/database.php';
 require_once 'models/Food.php';
 
+// Kiểm tra quyền admin/manager
+$isAdmin = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && 
+           isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'manager']);
+
 // Khởi tạo database và lấy dữ liệu
 $foods = [];
 $totalFoods = 0;
@@ -256,16 +260,16 @@ try {
                 <i class="fas fa-utensils"></i>
                 <span>Chế độ quản lý ẩm thực đã bật</span>
             </div>
-            <div class="admin-actions">
-                <button onclick="showAddFoodForm()" class="btn btn-success">
-                    <i class="fas fa-plus"></i>
-                    Thêm Món Ăn
+            <div class="admin-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button onclick="showAddFoodModal()" class="btn btn-success" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 12px 24px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: all 0.3s ease;">
+                    <i class="fas fa-plus-circle"></i>
+                    Thêm Món Ăn Mới
                 </button>
-                <a href="quan-ly-am-thuc.php" class="btn btn-primary">
+                <a href="quan-ly-am-thuc.php" class="btn btn-primary" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; padding: 12px 24px; border: none; border-radius: 12px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); transition: all 0.3s ease;">
                     <i class="fas fa-cogs"></i>
                     Trang Quản Lý
                 </a>
-                <button onclick="exportFoods()" class="btn btn-secondary">
+                <button onclick="exportFoods()" class="btn btn-secondary" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 12px 24px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); transition: all 0.3s ease;">
                     <i class="fas fa-download"></i>
                     Xuất Dữ Liệu
                 </button>
@@ -283,9 +287,19 @@ try {
                         Ẩm Thực Trà Vinh
                     </span>
                 </h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
                     Khám phá <?php echo $totalFoods; ?> món ăn đặc trưng của đất Khmer với hương vị truyền thống độc đáo
                 </p>
+                
+                <!-- Nút Thêm Món Ăn - Chỉ hiển thị cho Admin/Manager -->
+                <?php if ($isAdmin): ?>
+                <div style="margin-bottom: 2rem;">
+                    <button onclick="showAddFoodModal()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 14px 28px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1em; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); transition: all 0.3s ease;">
+                        <i class="fas fa-plus-circle"></i>
+                        Thêm Món Ăn Mới
+                    </button>
+                </div>
+                <?php endif; ?>
                 
                 <?php if ($error): ?>
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-2xl mx-auto mb-4" role="alert">
@@ -549,23 +563,12 @@ try {
                     </div>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-4">Kết Nối Với Chúng Tôi</h4>
-                    <div class="space-y-3">
-                        <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-facebook text-xl"></i>
-                            <span class="font-medium">Facebook</span>
-                        </a>
-                        <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-instagram text-xl"></i>
-                            <span class="font-medium">Instagram</span>
-                        </a>
-                        <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-youtube text-xl"></i>
-                            <span class="font-medium">YouTube</span>
-                        </a>
+                    <h4 class="font-bold mb-4">Thông Tin Tác Giả</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-user mr-2 text-blue-400"></i>Thạch Nhựt Minh</p>
+                        <p><i class="fas fa-id-card mr-2 text-green-400"></i>MSSV: 110122115</p>
+                        <p><i class="fas fa-graduation-cap mr-2 text-yellow-400"></i>Lớp: Da22TTB</p>
+                        <p><i class="fas fa-university mr-2 text-purple-400"></i>Trường ĐH Trà Vinh</p>
                     </div>
                 </div>
             </div>
@@ -573,23 +576,235 @@ try {
             <!-- Copyright & Social Icons -->
             <div class="border-t border-gray-700 mt-8 pt-8 text-center">
                 <p class="text-gray-400 mb-4">&copy; 2024 Du Lịch Trà Vinh. All rights reserved.</p>
-                <div class="flex justify-center space-x-6">
+                <div class="flex justify-center gap-4 mt-4">
                     <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-blue-400 transition-colors text-2xl">
-                        <i class="fab fa-facebook"></i>
+                        class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
                     </a>
                     <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-pink-400 transition-colors text-2xl">
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 hover:from-purple-500 hover:via-pink-400 hover:to-orange-300 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50" title="Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
                     <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-red-400 transition-colors text-2xl">
+                        class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50" title="YouTube">
                         <i class="fab fa-youtube"></i>
                     </a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Modal Thêm Món Ăn Mới -->
+    <div id="addFoodModal" class="food-modal-overlay" style="display: none;">
+        <div class="food-modal-content">
+            <div class="food-modal-header">
+                <h3><i class="fas fa-utensils"></i> Thêm Món Ăn Mới</h3>
+                <button type="button" class="food-modal-close" onclick="closeAddFoodModal()">&times;</button>
+            </div>
+            <form id="addFoodForm" onsubmit="submitAddFood(event)">
+                <div class="food-form-grid">
+                    <div class="food-form-group">
+                        <label><i class="fas fa-hamburger"></i> Tên món ăn *</label>
+                        <input type="text" name="name" id="foodName" required placeholder="VD: Bún nước lèo">
+                    </div>
+                    <div class="food-form-group">
+                        <label><i class="fas fa-tags"></i> Danh mục *</label>
+                        <select name="category" id="foodCategory" required>
+                            <option value="">-- Chọn danh mục --</option>
+                            <option value="Món chính">Món chính</option>
+                            <option value="Món phụ">Món phụ</option>
+                            <option value="Món tráng miệng">Món tráng miệng</option>
+                            <option value="Đồ uống">Đồ uống</option>
+                            <option value="Đặc sản">Đặc sản</option>
+                        </select>
+                    </div>
+                    <div class="food-form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Giá (VNĐ) *</label>
+                        <input type="number" name="price" id="foodPrice" required placeholder="VD: 35000" min="0">
+                    </div>
+                    <div class="food-form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Địa điểm</label>
+                        <input type="text" name="location" id="foodLocation" placeholder="VD: Chợ Trà Vinh">
+                    </div>
+                    <div class="food-form-group full-width">
+                        <label><i class="fas fa-image"></i> URL Hình ảnh</label>
+                        <input type="url" name="image_url" id="foodImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="food-form-group full-width">
+                        <label><i class="fas fa-align-left"></i> Mô tả *</label>
+                        <textarea name="description" id="foodDescription" required rows="4" placeholder="Mô tả chi tiết về món ăn..."></textarea>
+                    </div>
+                    <div class="food-form-group full-width">
+                        <label><i class="fas fa-list"></i> Nguyên liệu (mỗi dòng 1 nguyên liệu)</label>
+                        <textarea name="ingredients" id="foodIngredients" rows="3" placeholder="Bún&#10;Thịt heo&#10;Rau sống"></textarea>
+                    </div>
+                </div>
+                <div class="food-form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeAddFoodModal()">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn-submit" id="btnSubmitFood">
+                        <i class="fas fa-save"></i> Lưu Món Ăn
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Styles */
+        .food-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+        }
+        .food-modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            animation: foodModalSlideIn 0.3s ease;
+        }
+        @keyframes foodModalSlideIn {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .food-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 2px solid #f0f0f0;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 20px 20px 0 0;
+        }
+        .food-modal-header h3 {
+            font-size: 1.4em;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+        .food-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .food-modal-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+        .food-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+        .food-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .food-form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .food-form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .food-form-group label i {
+            color: #f97316;
+        }
+        .food-form-group input,
+        .food-form-group select,
+        .food-form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .food-form-group input:focus,
+        .food-form-group select:focus,
+        .food-form-group textarea:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+        .food-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding: 20px 30px;
+            border-top: 2px solid #f0f0f0;
+            background: #f9fafb;
+            border-radius: 0 0 20px 20px;
+        }
+        .btn-cancel {
+            padding: 12px 25px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-cancel:hover {
+            background: #4b5563;
+        }
+        .btn-submit {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+        @media (max-width: 600px) {
+            .food-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </body>
 
 </html>
@@ -802,5 +1017,78 @@ earch Foods Script -->
             border-radius: 0.25rem;
         }
     </style>
+
+    <script>
+        // ========== MODAL THÊM MÓN ĂN ==========
+        function showAddFoodModal() {
+            document.getElementById('addFoodModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddFoodModal() {
+            document.getElementById('addFoodModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('addFoodForm').reset();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('addFoodModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddFoodModal();
+            }
+        });
+
+        // Submit form
+        async function submitAddFood(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('btnSubmitFood');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+            
+            const formData = {
+                name: document.getElementById('foodName').value,
+                category: document.getElementById('foodCategory').value,
+                price: document.getElementById('foodPrice').value,
+                location: document.getElementById('foodLocation').value,
+                image_url: document.getElementById('foodImage').value,
+                description: document.getElementById('foodDescription').value,
+                ingredients: document.getElementById('foodIngredients').value
+            };
+            
+            try {
+                const response = await fetch('api/foods.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'create',
+                        ...formData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    closeAddFoodModal();
+                    location.reload();
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Có lỗi xảy ra: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Lưu Món Ăn';
+            }
+        }
+
+        // Export foods function
+        function exportFoods() {
+            window.open('api/foods.php?action=export', '_blank');
+        }
+    </script>
 </body>
 </html>

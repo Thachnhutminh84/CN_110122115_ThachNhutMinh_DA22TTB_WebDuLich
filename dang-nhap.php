@@ -9,6 +9,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     header('Location: index.php');
     exit;
 }
+
+// Lấy thông báo OAuth nếu có
+$oauthError = isset($_SESSION['oauth_error']) ? $_SESSION['oauth_error'] : null;
+$oauthSuccess = isset($_SESSION['oauth_success']) ? $_SESSION['oauth_success'] : null;
+unset($_SESSION['oauth_error'], $_SESSION['oauth_success']);
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -326,30 +331,52 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
         }
 
         .social-btn {
-            padding: 12px;
+            padding: 14px 20px;
             border: 2px solid #e5e7eb;
-            border-radius: 10px;
+            border-radius: 12px;
             background: white;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 0.95em;
         }
 
         .social-btn:hover {
-            border-color: #d1d5db;
-            background: #f9fafb;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .social-btn.google {
             color: #ea4335;
+            border-color: #ea433533;
+        }
+
+        .social-btn.google:hover {
+            background: linear-gradient(135deg, #ea4335, #d33426);
+            color: white;
+            border-color: #ea4335;
+            box-shadow: 0 8px 25px rgba(234, 67, 53, 0.4);
         }
 
         .social-btn.facebook {
             color: #1877f2;
+            border-color: #1877f233;
+        }
+
+        .social-btn.facebook:hover {
+            background: linear-gradient(135deg, #1877f2, #0d5bbd);
+            color: white;
+            border-color: #1877f2;
+            box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4);
+        }
+
+        .social-btn i {
+            font-size: 1.2em;
         }
 
         .register-link {
@@ -395,6 +422,82 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             .login-container {
                 padding: 40px 30px;
             }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3em;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h3 .fa-google { color: #ea4335; }
+        .modal-header h3 .fa-facebook { color: #1877f2; }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8em;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: #333;
         }
     </style>
 </head>
@@ -454,6 +557,18 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <p class="login-subtitle">Truy cập vào tài khoản của bạn</p>
 
             <div id="alert" class="alert"></div>
+            
+            <?php if ($oauthError): ?>
+            <div class="alert alert-error" style="display: block;">
+                <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($oauthError); ?>
+            </div>
+            <?php endif; ?>
+            
+            <?php if ($oauthSuccess): ?>
+            <div class="alert alert-success" style="display: block;">
+                <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($oauthSuccess); ?>
+            </div>
+            <?php endif; ?>
 
             <form id="loginForm">
                 <div class="form-group">
@@ -488,16 +603,52 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             <div class="divider">Hoặc đăng nhập với</div>
 
             <div class="social-login">
-                <button class="social-btn google" onclick="alert('Chức năng đang phát triển')">
+                <button type="button" class="social-btn google" onclick="loginWithGoogle()">
                     <i class="fab fa-google"></i> Google
                 </button>
-                <button class="social-btn facebook" onclick="alert('Chức năng đang phát triển')">
+                <button type="button" class="social-btn facebook" onclick="loginWithFacebook()">
                     <i class="fab fa-facebook"></i> Facebook
                 </button>
+            </div>
+            
+            <!-- Modal nhập email cho đăng nhập mạng xã hội -->
+            <div id="socialLoginModal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="modalTitle"><i class="fab fa-google"></i> Đăng nhập với Google</h3>
+                        <button type="button" class="modal-close" onclick="closeSocialModal()">&times;</button>
+                    </div>
+                    <form id="socialLoginForm">
+                        <input type="hidden" id="socialProvider" name="provider" value="google">
+                        <div class="form-group">
+                            <label>Email của bạn</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="socialEmail" name="email" required placeholder="example@gmail.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Họ và tên</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="socialName" name="full_name" required placeholder="Nguyễn Văn A">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-login" id="btnSocialLogin">
+                            <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <div class="register-link">
                 Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a>
+            </div>
+            
+            <div class="oauth-config-link" style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                <a href="admin/oauth-config.php" style="color: #9ca3af; font-size: 0.85em; text-decoration: none;">
+                    <i class="fas fa-cog"></i> Cấu hình OAuth (Admin)
+                </a>
             </div>
         </div>
     </div>
@@ -583,6 +734,80 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 if (dropdown) {
                     dropdown.classList.remove('show');
                 }
+            }
+        });
+
+        // ========== SOCIAL LOGIN FUNCTIONS ==========
+        
+        function loginWithGoogle() {
+            document.getElementById('socialProvider').value = 'google';
+            document.getElementById('modalTitle').innerHTML = '<i class="fab fa-google"></i> Đăng nhập với Google';
+            document.getElementById('socialEmail').placeholder = 'example@gmail.com';
+            document.getElementById('socialLoginModal').style.display = 'flex';
+        }
+
+        function loginWithFacebook() {
+            document.getElementById('socialProvider').value = 'facebook';
+            document.getElementById('modalTitle').innerHTML = '<i class="fab fa-facebook"></i> Đăng nhập với Facebook';
+            document.getElementById('socialEmail').placeholder = 'example@facebook.com';
+            document.getElementById('socialLoginModal').style.display = 'flex';
+        }
+
+        function closeSocialModal() {
+            document.getElementById('socialLoginModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('socialLoginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSocialModal();
+            }
+        });
+
+        // Handle social login form
+        document.getElementById('socialLoginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const provider = document.getElementById('socialProvider').value;
+            const email = document.getElementById('socialEmail').value;
+            const fullName = document.getElementById('socialName').value;
+            const btnSocial = document.getElementById('btnSocialLogin');
+            
+            btnSocial.disabled = true;
+            btnSocial.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+            
+            try {
+                const response = await fetch('api/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'social_login',
+                        provider: provider,
+                        email: email,
+                        full_name: fullName
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    closeSocialModal();
+                    showAlert('success', '✅ ' + result.message);
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.php';
+                    }, 1500);
+                } else {
+                    showAlert('error', '❌ ' + result.message);
+                    btnSocial.disabled = false;
+                    btnSocial.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng Nhập';
+                }
+            } catch (error) {
+                showAlert('error', '❌ Có lỗi xảy ra. Vui lòng thử lại!');
+                btnSocial.disabled = false;
+                btnSocial.innerHTML = '<i class="fas fa-sign-in-alt"></i> Đăng Nhập';
             }
         });
     </script>

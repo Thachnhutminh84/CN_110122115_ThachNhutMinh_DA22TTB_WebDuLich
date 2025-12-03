@@ -255,4 +255,109 @@ class User {
         
         return $stmt->execute();
     }
+
+    /**
+     * Tìm user theo email
+     */
+    public function findByEmail($email) {
+        $query = "SELECT * FROM {$this->table} WHERE email = :email LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
+    }
+
+    /**
+     * Tìm user theo Google ID
+     */
+    public function findByGoogleId($googleId) {
+        $query = "SELECT * FROM {$this->table} WHERE google_id = :google_id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':google_id', $googleId);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
+    }
+
+    /**
+     * Tìm user theo Facebook ID
+     */
+    public function findByFacebookId($facebookId) {
+        $query = "SELECT * FROM {$this->table} WHERE facebook_id = :facebook_id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':facebook_id', $facebookId);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
+    }
+
+    /**
+     * Tạo user từ OAuth (Google/Facebook)
+     */
+    public function createFromOAuth($data) {
+        try {
+            $user_id = $this->generateUserId();
+
+            $query = "INSERT INTO {$this->table} 
+                     (user_id, username, email, full_name, google_id, facebook_id, avatar_url, role, status) 
+                     VALUES 
+                     (:user_id, :username, :email, :full_name, :google_id, :facebook_id, :avatar_url, 'user', 'active')";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':username', $data['username']);
+            $stmt->bindParam(':email', $data['email']);
+            $stmt->bindParam(':full_name', $data['full_name']);
+            $stmt->bindParam(':google_id', $data['google_id']);
+            $stmt->bindParam(':facebook_id', $data['facebook_id']);
+            $stmt->bindParam(':avatar_url', $data['avatar_url']);
+
+            if ($stmt->execute()) {
+                return [
+                    'success' => true,
+                    'user_id' => $this->conn->lastInsertId()
+                ];
+            }
+
+            return ['success' => false, 'message' => 'Không thể tạo tài khoản'];
+
+        } catch (PDOException $e) {
+            return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Cập nhật OAuth ID cho user
+     */
+    public function updateOAuthId($userId, $provider, $providerId, $avatarUrl = null) {
+        $column = ($provider === 'google') ? 'google_id' : 'facebook_id';
+        
+        $query = "UPDATE {$this->table} SET {$column} = :provider_id";
+        if ($avatarUrl) {
+            $query .= ", avatar_url = COALESCE(avatar_url, :avatar_url)";
+        }
+        $query .= " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':provider_id', $providerId);
+        $stmt->bindParam(':id', $userId);
+        if ($avatarUrl) {
+            $stmt->bindParam(':avatar_url', $avatarUrl);
+        }
+
+        return $stmt->execute();
+    }
 }

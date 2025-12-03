@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 30, 2025 at 05:31 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th12 03, 2025 lúc 03:44 AM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,22 +18,23 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `travinh_tourism`
+-- Cơ sở dữ liệu: `travinh_tourism`
 --
-CREATE DATABASE IF NOT EXISTS `travinh_tourism` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `travinh_tourism`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `app_users`
+-- Cấu trúc bảng cho bảng `app_users`
 --
 
 CREATE TABLE `app_users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
+  `google_id` varchar(100) DEFAULT NULL,
+  `facebook_id` varchar(100) DEFAULT NULL,
+  `avatar_url` varchar(500) DEFAULT NULL,
   `full_name` varchar(100) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `role` enum('admin','manager','user') DEFAULT 'user',
@@ -42,23 +43,23 @@ CREATE TABLE `app_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `app_users`
+-- Đang đổ dữ liệu cho bảng `app_users`
 --
 
-INSERT INTO `app_users` (`id`, `username`, `password`, `email`, `full_name`, `phone`, `role`, `status`, `created_at`) VALUES
-(1, 'manager', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manager@travinh.edu.vn', 'Nguyễn Văn Quản Lý', '0292.3855.247', 'manager', 'active', '2024-01-15 02:00:00'),
-(2, 'user1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user1@gmail.com', 'Trần Thị Hương', '0901234567', 'user', 'active', '2024-06-10 03:30:00'),
-(3, 'user2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user2@gmail.com', 'Lê Văn Minh', '0912345678', 'user', 'active', '2024-07-20 07:15:00'),
-(6, 'admin', '$2y$10$DWXvd4SfMTfoOyyW3ZZYKezUpIiKGo6ClwtQVPJCzKKQlt5Z20Cca', 'admin@travinh.vn', 'Quản Trị Viên', '0123456789', 'admin', 'active', '2025-11-14 04:16:22'),
-(8, 'nhutminh', '$2y$10$slZT7AxdMrIrZJQoaMAhPuumgeomL0PU3rXMNrsYNkGt.Ll49igJS', 'nhutminh@gmail.com', 'Nhựt Minh', NULL, 'user', 'active', '2025-11-15 13:30:11'),
-(9, 'socna', '$2y$10$slZT7AxdMrIrZJQoaMAhPuumgeomL0PU3rXMNrsYNkGt.Ll49igJS', 'socna@gmail.com', 'Sóc Na', NULL, 'user', 'active', '2025-11-15 13:30:11'),
-(10, 'Nhựt Minh', '$2y$10$lve9B6OAKBoXei/n5/PmPemCU1wgVZg9vv4eGmvl8034ROT2K88fi', 'thachnhatminh8@gmail.com', 'Thạch Nhựt Minh', '0366058110', 'user', 'active', '2025-11-19 07:51:59'),
-(11, 'Quãng', '$2y$10$poVzqkDWzQpr6sgmcdtWoO.Wncvj5wWNknWeFh3Fn2gpBKxdvdPYe', 'thachnhatminh0@gmail.com', 'TRương Quãng', '0366058110', 'user', 'active', '2025-11-25 08:30:33');
+INSERT INTO `app_users` (`id`, `username`, `password`, `email`, `google_id`, `facebook_id`, `avatar_url`, `full_name`, `phone`, `role`, `status`, `created_at`) VALUES
+(1, 'manager', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manager@travinh.edu.vn', NULL, NULL, NULL, 'Nguyễn Văn Quản Lý', '0292.3855.247', 'manager', 'active', '2024-01-15 02:00:00'),
+(2, 'user1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user1@gmail.com', NULL, NULL, NULL, 'Trần Thị Hương', '0901234567', 'user', 'active', '2024-06-10 03:30:00'),
+(3, 'user2', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user2@gmail.com', NULL, NULL, NULL, 'Lê Văn Minh', '0912345678', 'user', 'active', '2024-07-20 07:15:00'),
+(6, 'admin', '$2y$10$DWXvd4SfMTfoOyyW3ZZYKezUpIiKGo6ClwtQVPJCzKKQlt5Z20Cca', 'admin@travinh.vn', NULL, NULL, NULL, 'Quản Trị Viên', '0123456789', 'admin', 'active', '2025-11-14 04:16:22'),
+(8, 'nhutminh', '$2y$10$slZT7AxdMrIrZJQoaMAhPuumgeomL0PU3rXMNrsYNkGt.Ll49igJS', 'nhutminh@gmail.com', NULL, NULL, NULL, 'Nhựt Minh', NULL, 'user', 'active', '2025-11-15 13:30:11'),
+(9, 'socna', '$2y$10$slZT7AxdMrIrZJQoaMAhPuumgeomL0PU3rXMNrsYNkGt.Ll49igJS', 'socna@gmail.com', NULL, NULL, NULL, 'Sóc Na', NULL, 'user', 'active', '2025-11-15 13:30:11'),
+(10, 'Nhựt Minh', '$2y$10$lve9B6OAKBoXei/n5/PmPemCU1wgVZg9vv4eGmvl8034ROT2K88fi', 'thachnhatminh8@gmail.com', NULL, NULL, NULL, 'Thạch Nhựt Minh', '0366058110', 'user', 'active', '2025-11-19 07:51:59'),
+(11, 'Quãng', '$2y$10$poVzqkDWzQpr6sgmcdtWoO.Wncvj5wWNknWeFh3Fn2gpBKxdvdPYe', 'thachnhatminh0@gmail.com', NULL, NULL, NULL, 'TRương Quãng', '0366058110', 'user', 'active', '2025-11-25 08:30:33');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attractions`
+-- Cấu trúc bảng cho bảng `attractions`
 --
 
 CREATE TABLE `attractions` (
@@ -89,7 +90,7 @@ CREATE TABLE `attractions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `attractions`
+-- Đang đổ dữ liệu cho bảng `attractions`
 --
 
 INSERT INTO `attractions` (`id`, `attraction_id`, `name`, `description`, `location`, `category`, `ticket_price`, `image_url`, `opening_hours`, `highlights`, `facilities`, `best_time`, `contact`, `status`, `created_at`, `updated_at`, `year_built`, `cultural_significance`, `historical_value`, `architecture_style`, `notable_features`, `religious_significance`, `latitude`, `longitude`) VALUES
@@ -114,7 +115,7 @@ INSERT INTO `attractions` (`id`, `attraction_id`, `name`, `description`, `locati
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attraction_ratings`
+-- Cấu trúc bảng cho bảng `attraction_ratings`
 --
 
 CREATE TABLE `attraction_ratings` (
@@ -130,7 +131,7 @@ CREATE TABLE `attraction_ratings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `attraction_ratings`
+-- Đang đổ dữ liệu cho bảng `attraction_ratings`
 --
 
 INSERT INTO `attraction_ratings` (`attraction_id`, `total_reviews`, `average_rating`, `rating_5_star`, `rating_4_star`, `rating_3_star`, `rating_2_star`, `rating_1_star`, `updated_at`) VALUES
@@ -155,7 +156,7 @@ INSERT INTO `attraction_ratings` (`attraction_id`, `total_reviews`, `average_rat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bookings`
+-- Cấu trúc bảng cho bảng `bookings`
 --
 
 CREATE TABLE `bookings` (
@@ -175,7 +176,7 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `bookings`
+-- Đang đổ dữ liệu cho bảng `bookings`
 --
 
 INSERT INTO `bookings` (`id`, `booking_id`, `attraction_id`, `customer_name`, `customer_email`, `customer_phone`, `booking_date`, `number_of_people`, `total_price`, `special_requests`, `status`, `created_at`, `updated_at`) VALUES
@@ -187,7 +188,7 @@ INSERT INTO `bookings` (`id`, `booking_id`, `attraction_id`, `customer_name`, `c
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contacts`
+-- Cấu trúc bảng cho bảng `contacts`
 --
 
 CREATE TABLE `contacts` (
@@ -204,7 +205,7 @@ CREATE TABLE `contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `contacts`
+-- Đang đổ dữ liệu cho bảng `contacts`
 --
 
 INSERT INTO `contacts` (`id`, `full_name`, `email`, `phone`, `subject`, `message`, `status`, `created_at`, `replied_at`, `reply_message`) VALUES
@@ -219,7 +220,7 @@ INSERT INTO `contacts` (`id`, `full_name`, `email`, `phone`, `subject`, `message
 -- --------------------------------------------------------
 
 --
--- Table structure for table `foods`
+-- Cấu trúc bảng cho bảng `foods`
 --
 
 CREATE TABLE `foods` (
@@ -238,7 +239,7 @@ CREATE TABLE `foods` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `foods`
+-- Đang đổ dữ liệu cho bảng `foods`
 --
 
 INSERT INTO `foods` (`food_id`, `name`, `name_vi`, `name_khmer`, `category`, `description`, `ingredients`, `price_range`, `image_url`, `origin`, `best_time`, `status`) VALUES
@@ -265,7 +266,7 @@ INSERT INTO `foods` (`food_id`, `name`, `name_vi`, `name_khmer`, `category`, `de
 -- --------------------------------------------------------
 
 --
--- Table structure for table `restaurants`
+-- Cấu trúc bảng cho bảng `restaurants`
 --
 -- Error reading structure for table travinh_tourism.restaurants: #1030 - Got error 194 &quot;Tablespace is missing for a table&quot; from storage engine InnoDB
 -- Error reading data for table travinh_tourism.restaurants: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#039;FROM `travinh_tourism`.`restaurants`&#039; at line 1
@@ -273,7 +274,7 @@ INSERT INTO `foods` (`food_id`, `name`, `name_vi`, `name_khmer`, `category`, `de
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reviews`
+-- Cấu trúc bảng cho bảng `reviews`
 --
 
 CREATE TABLE `reviews` (
@@ -295,7 +296,7 @@ CREATE TABLE `reviews` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Triggers `reviews`
+-- Bẫy `reviews`
 --
 DELIMITER $$
 CREATE TRIGGER `after_review_delete` AFTER DELETE ON `reviews` FOR EACH ROW BEGIN
@@ -328,7 +329,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `review_helpful`
+-- Cấu trúc bảng cho bảng `review_helpful`
 --
 
 CREATE TABLE `review_helpful` (
@@ -342,7 +343,7 @@ CREATE TABLE `review_helpful` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `review_images`
+-- Cấu trúc bảng cho bảng `review_images`
 --
 
 CREATE TABLE `review_images` (
@@ -357,7 +358,7 @@ CREATE TABLE `review_images` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `services`
+-- Cấu trúc bảng cho bảng `services`
 --
 
 CREATE TABLE `services` (
@@ -375,7 +376,7 @@ CREATE TABLE `services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `services`
+-- Đang đổ dữ liệu cho bảng `services`
 --
 
 INSERT INTO `services` (`service_id`, `service_name`, `service_type`, `description`, `icon`, `price_from`, `price_to`, `unit`, `features`, `is_active`, `created_at`) VALUES
@@ -396,7 +397,7 @@ INSERT INTO `services` (`service_id`, `service_name`, `service_type`, `descripti
 -- --------------------------------------------------------
 
 --
--- Table structure for table `service_bookings`
+-- Cấu trúc bảng cho bảng `service_bookings`
 --
 
 CREATE TABLE `service_bookings` (
@@ -417,7 +418,7 @@ CREATE TABLE `service_bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `service_bookings`
+-- Đang đổ dữ liệu cho bảng `service_bookings`
 --
 
 INSERT INTO `service_bookings` (`id`, `booking_code`, `service_id`, `customer_name`, `customer_phone`, `customer_email`, `service_date`, `number_of_people`, `number_of_days`, `special_requests`, `total_price`, `status`, `created_at`, `updated_at`) VALUES
@@ -442,12 +443,13 @@ INSERT INTO `service_bookings` (`id`, `booking_code`, `service_id`, `customer_na
 (19, 'SB20250019', 'SV003', 'Phạm Văn Tài', '0989990011', 'phamvantai@gmail.com', '2025-03-01', 4, 7, 'Tour trọn gói gia đình', 10000000.00, 'confirmed', '2024-12-22 02:15:00', '2025-11-27 03:15:33'),
 (20, 'SB20250020', 'SV006', 'Hoàng Thị Mai', '0990001122', 'hoangthimai@gmail.com', '2025-02-14', 2, 3, 'Homestay lãng mạn', 3000000.00, 'confirmed', '2024-12-24 09:00:00', '2025-11-27 03:10:28'),
 (21, 'SB20251130031158382', '1', 'TRương Quãng', '0366058110', 'thachnhatminh8@gmail.com', NULL, 1, 1, 'đi chơi\n', 0.00, 'pending', '2025-11-30 02:11:58', '2025-11-30 02:11:58'),
-(22, 'SB20251130031241928', '2', 'Thạch Nhưt Minh', '0366058110', 'thachnhatminh8@gmail.com', NULL, 1, 1, 'đi chơi', 0.00, 'pending', '2025-11-30 02:12:41', '2025-11-30 02:12:41');
+(22, 'SB20251130031241928', '2', 'Thạch Nhưt Minh', '0366058110', 'thachnhatminh8@gmail.com', NULL, 1, 1, 'đi chơi', 0.00, 'pending', '2025-11-30 02:12:41', '2025-11-30 02:12:41'),
+(23, 'SB20251130053455224', '3', 'Thạch Hương Trầm', '0366058110', 'thachnhatminh8@gmail.com', NULL, 1, 1, 'đi chơi', 0.00, 'pending', '2025-11-30 04:34:55', '2025-11-30 04:34:55');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tours`
+-- Cấu trúc bảng cho bảng `tours`
 --
 
 CREATE TABLE `tours` (
@@ -471,7 +473,7 @@ CREATE TABLE `tours` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `tours`
+-- Đang đổ dữ liệu cho bảng `tours`
 --
 
 INSERT INTO `tours` (`tour_id`, `tour_code`, `tour_name`, `description`, `duration`, `price`, `max_participants`, `min_participants`, `tour_type`, `difficulty_level`, `image_url`, `itinerary`, `included_services`, `excluded_services`, `notes`, `status`, `created_at`) VALUES
@@ -482,7 +484,7 @@ INSERT INTO `tours` (`tour_id`, `tour_code`, `tour_name`, `description`, `durati
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tour_attractions`
+-- Cấu trúc bảng cho bảng `tour_attractions`
 --
 
 CREATE TABLE `tour_attractions` (
@@ -493,7 +495,7 @@ CREATE TABLE `tour_attractions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `tour_attractions`
+-- Đang đổ dữ liệu cho bảng `tour_attractions`
 --
 
 INSERT INTO `tour_attractions` (`tour_id`, `attraction_id`, `visit_order`, `visit_duration`) VALUES
@@ -510,7 +512,7 @@ INSERT INTO `tour_attractions` (`tour_id`, `attraction_id`, `visit_order`, `visi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tour_pricing`
+-- Cấu trúc bảng cho bảng `tour_pricing`
 --
 
 CREATE TABLE `tour_pricing` (
@@ -526,7 +528,7 @@ CREATE TABLE `tour_pricing` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `tour_pricing`
+-- Đang đổ dữ liệu cho bảng `tour_pricing`
 --
 
 INSERT INTO `tour_pricing` (`pricing_id`, `tour_id`, `season_name`, `start_date`, `end_date`, `adult_price`, `child_price`, `infant_price`, `is_active`) VALUES
@@ -537,7 +539,7 @@ INSERT INTO `tour_pricing` (`pricing_id`, `tour_id`, `season_name`, `start_date`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tour_schedules`
+-- Cấu trúc bảng cho bảng `tour_schedules`
 --
 
 CREATE TABLE `tour_schedules` (
@@ -556,7 +558,7 @@ CREATE TABLE `tour_schedules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `tour_schedules`
+-- Đang đổ dữ liệu cho bảng `tour_schedules`
 --
 
 INSERT INTO `tour_schedules` (`schedule_id`, `tour_id`, `departure_date`, `departure_time`, `return_date`, `return_time`, `available_slots`, `guide_name`, `guide_phone`, `meeting_point`, `status`, `created_at`) VALUES
@@ -566,11 +568,11 @@ INSERT INTO `tour_schedules` (`schedule_id`, `tour_id`, `departure_date`, `depar
 (4, 3, '2024-12-22', '07:00:00', '2024-12-23', '18:00:00', 20, 'Phạm Thị Dung', '0904567890', 'Trường ĐH Trà Vinh', 'scheduled', '2025-11-14 02:49:21');
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `app_users`
+-- Chỉ mục cho bảng `app_users`
 --
 ALTER TABLE `app_users`
   ADD PRIMARY KEY (`id`),
@@ -578,20 +580,20 @@ ALTER TABLE `app_users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `attractions`
+-- Chỉ mục cho bảng `attractions`
 --
 ALTER TABLE `attractions`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `attraction_id` (`attraction_id`);
 
 --
--- Indexes for table `attraction_ratings`
+-- Chỉ mục cho bảng `attraction_ratings`
 --
 ALTER TABLE `attraction_ratings`
   ADD PRIMARY KEY (`attraction_id`);
 
 --
--- Indexes for table `bookings`
+-- Chỉ mục cho bảng `bookings`
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`id`),
@@ -601,7 +603,7 @@ ALTER TABLE `bookings`
   ADD KEY `idx_booking_date` (`booking_date`);
 
 --
--- Indexes for table `contacts`
+-- Chỉ mục cho bảng `contacts`
 --
 ALTER TABLE `contacts`
   ADD PRIMARY KEY (`id`),
@@ -609,13 +611,13 @@ ALTER TABLE `contacts`
   ADD KEY `idx_created_at` (`created_at`);
 
 --
--- Indexes for table `foods`
+-- Chỉ mục cho bảng `foods`
 --
 ALTER TABLE `foods`
   ADD PRIMARY KEY (`food_id`);
 
 --
--- Indexes for table `reviews`
+-- Chỉ mục cho bảng `reviews`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`id`),
@@ -625,158 +627,158 @@ ALTER TABLE `reviews`
   ADD KEY `idx_status` (`status`);
 
 --
--- Indexes for table `review_helpful`
+-- Chỉ mục cho bảng `review_helpful`
 --
 ALTER TABLE `review_helpful`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_vote` (`review_id`,`user_id`,`ip_address`);
 
 --
--- Indexes for table `review_images`
+-- Chỉ mục cho bảng `review_images`
 --
 ALTER TABLE `review_images`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_review` (`review_id`);
 
 --
--- Indexes for table `services`
+-- Chỉ mục cho bảng `services`
 --
 ALTER TABLE `services`
   ADD PRIMARY KEY (`service_id`);
 
 --
--- Indexes for table `service_bookings`
+-- Chỉ mục cho bảng `service_bookings`
 --
 ALTER TABLE `service_bookings`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `booking_code` (`booking_code`);
 
 --
--- Indexes for table `tours`
+-- Chỉ mục cho bảng `tours`
 --
 ALTER TABLE `tours`
   ADD PRIMARY KEY (`tour_id`),
   ADD UNIQUE KEY `tour_code` (`tour_code`);
 
 --
--- Indexes for table `tour_attractions`
+-- Chỉ mục cho bảng `tour_attractions`
 --
 ALTER TABLE `tour_attractions`
   ADD PRIMARY KEY (`tour_id`,`attraction_id`);
 
 --
--- Indexes for table `tour_pricing`
+-- Chỉ mục cho bảng `tour_pricing`
 --
 ALTER TABLE `tour_pricing`
   ADD PRIMARY KEY (`pricing_id`),
   ADD KEY `tour_id` (`tour_id`);
 
 --
--- Indexes for table `tour_schedules`
+-- Chỉ mục cho bảng `tour_schedules`
 --
 ALTER TABLE `tour_schedules`
   ADD PRIMARY KEY (`schedule_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `app_users`
+-- AUTO_INCREMENT cho bảng `app_users`
 --
 ALTER TABLE `app_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `attractions`
+-- AUTO_INCREMENT cho bảng `attractions`
 --
 ALTER TABLE `attractions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
--- AUTO_INCREMENT for table `bookings`
+-- AUTO_INCREMENT cho bảng `bookings`
 --
 ALTER TABLE `bookings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `contacts`
+-- AUTO_INCREMENT cho bảng `contacts`
 --
 ALTER TABLE `contacts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `reviews`
+-- AUTO_INCREMENT cho bảng `reviews`
 --
 ALTER TABLE `reviews`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `review_helpful`
+-- AUTO_INCREMENT cho bảng `review_helpful`
 --
 ALTER TABLE `review_helpful`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `review_images`
+-- AUTO_INCREMENT cho bảng `review_images`
 --
 ALTER TABLE `review_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `service_bookings`
+-- AUTO_INCREMENT cho bảng `service_bookings`
 --
 ALTER TABLE `service_bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `tours`
+-- AUTO_INCREMENT cho bảng `tours`
 --
 ALTER TABLE `tours`
   MODIFY `tour_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tour_pricing`
+-- AUTO_INCREMENT cho bảng `tour_pricing`
 --
 ALTER TABLE `tour_pricing`
   MODIFY `pricing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tour_schedules`
+-- AUTO_INCREMENT cho bảng `tour_schedules`
 --
 ALTER TABLE `tour_schedules`
   MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `attraction_ratings`
+-- Các ràng buộc cho bảng `attraction_ratings`
 --
 ALTER TABLE `attraction_ratings`
   ADD CONSTRAINT `attraction_ratings_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `attractions` (`attraction_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `reviews`
+-- Các ràng buộc cho bảng `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `attractions` (`attraction_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `review_helpful`
+-- Các ràng buộc cho bảng `review_helpful`
 --
 ALTER TABLE `review_helpful`
   ADD CONSTRAINT `review_helpful_ibfk_1` FOREIGN KEY (`review_id`) REFERENCES `reviews` (`review_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `review_images`
+-- Các ràng buộc cho bảng `review_images`
 --
 ALTER TABLE `review_images`
   ADD CONSTRAINT `review_images_ibfk_1` FOREIGN KEY (`review_id`) REFERENCES `reviews` (`review_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `tour_pricing`
+-- Các ràng buộc cho bảng `tour_pricing`
 --
 ALTER TABLE `tour_pricing`
   ADD CONSTRAINT `tour_pricing_ibfk_1` FOREIGN KEY (`tour_id`) REFERENCES `tours` (`tour_id`);

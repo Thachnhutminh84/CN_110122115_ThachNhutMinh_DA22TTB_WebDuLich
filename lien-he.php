@@ -172,59 +172,7 @@
                     </div>
                 </div>
 
-                <!-- Social Media -->
-                <div class="bg-white rounded-2xl shadow-xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Kết Nối Với Chúng Tôi</h3>
-                    <div class="space-y-4 mb-6">
-                        <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-300 hover:scale-105 hover:shadow-md">
-                            <div class="bg-blue-600 p-3 rounded-full">
-                                <i class="fab fa-facebook text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Facebook</h4>
-                                <p class="text-sm text-gray-600">Theo dõi fanpage của chúng tôi</p>
-                            </div>
-                        </a>
-                        <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg hover:from-purple-100 hover:to-pink-100 transition-all duration-300 hover:scale-105 hover:shadow-md">
-                            <div class="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 p-3 rounded-full">
-                                <i class="fab fa-instagram text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">Instagram</h4>
-                                <p class="text-sm text-gray-600">Xem hình ảnh đẹp về Trà Vinh</p>
-                            </div>
-                        </a>
-                        <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-4 p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-300 hover:scale-105 hover:shadow-md">
-                            <div class="bg-red-600 p-3 rounded-full">
-                                <i class="fab fa-youtube text-2xl text-white"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">YouTube</h4>
-                                <p class="text-sm text-gray-600">Khám phá video du lịch</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="text-center pt-4 border-t border-gray-200">
-                        <p class="text-sm text-gray-600 mb-3">Hoặc liên hệ trực tiếp qua:</p>
-                        <div class="flex justify-center space-x-4">
-                            <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                                class="text-blue-600 hover:text-blue-700 text-2xl transition-colors">
-                                <i class="fab fa-facebook"></i>
-                            </a>
-                            <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                                class="text-pink-600 hover:text-pink-700 text-2xl transition-colors">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                                class="text-red-600 hover:text-red-700 text-2xl transition-colors">
-                                <i class="fab fa-youtube"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -255,23 +203,12 @@
                     </div>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-4">Kết Nối Với Chúng Tôi</h4>
-                    <div class="space-y-3">
-                        <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-facebook text-xl"></i>
-                            <span class="font-medium">Facebook</span>
-                        </a>
-                        <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-instagram text-xl"></i>
-                            <span class="font-medium">Instagram</span>
-                        </a>
-                        <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                            class="flex items-center space-x-3 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                            <i class="fab fa-youtube text-xl"></i>
-                            <span class="font-medium">YouTube</span>
-                        </a>
+                    <h4 class="font-bold mb-4">Thông Tin Tác Giả</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p><i class="fas fa-user mr-2 text-blue-400"></i>Thạch Nhựt Minh</p>
+                        <p><i class="fas fa-id-card mr-2 text-green-400"></i>MSSV: 110122115</p>
+                        <p><i class="fas fa-graduation-cap mr-2 text-yellow-400"></i>Lớp: Da22TTB</p>
+                        <p><i class="fas fa-university mr-2 text-purple-400"></i>Trường ĐH Trà Vinh</p>
                     </div>
                 </div>
             </div>
@@ -279,17 +216,17 @@
             <!-- Copyright & Social Icons -->
             <div class="border-t border-gray-700 mt-8 pt-8 text-center">
                 <p class="text-gray-400 mb-4">&copy; 2024 Du Lịch Trà Vinh. All rights reserved.</p>
-                <div class="flex justify-center space-x-6">
+                <div class="flex justify-center gap-4 mt-4">
                     <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-blue-400 transition-colors text-2xl">
-                        <i class="fab fa-facebook"></i>
+                        class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
                     </a>
                     <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-pink-400 transition-colors text-2xl">
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 hover:from-purple-500 hover:via-pink-400 hover:to-orange-300 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50" title="Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
                     <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                        class="text-gray-400 hover:text-red-400 transition-colors text-2xl">
+                        class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50" title="YouTube">
                         <i class="fab fa-youtube"></i>
                     </a>
                 </div>

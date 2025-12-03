@@ -1,0 +1,24 @@
+# Cấu hình nhạy cảm
+config/oauth.php
+
+# Thư mục tạm
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies (nếu có)
+vendor/
+node_modules/
+
+# File backup
+*~ 
+*.bak
+* - Copy.php
+* - Copy.*

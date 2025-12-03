@@ -644,10 +644,19 @@ $stats = [
                 <div>
                     <h3 class="text-xl font-bold mb-4">Du Lịch Trà Vinh</h3>
                     <p class="text-gray-300 mb-4">Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời của Trà Vinh.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-2xl hover:text-blue-400 transition-colors"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-2xl hover:text-pink-400 transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-2xl hover:text-red-400 transition-colors"><i class="fab fa-youtube"></i></a>
+                    <div class="flex space-x-3">
+                        <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer" 
+                           class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
+                           class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
+                           class="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50">
+                            <i class="fab fa-youtube"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -671,31 +680,8 @@ $stats = [
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Kết Nối Với Chúng Tôi</h4>
-                    <div class="flex gap-4">
-                        <a href="https://www.facebook.com/travinh.tourism" 
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
-                           title="Facebook">
-                            <i class="fab fa-facebook-f text-xl"></i>
-                        </a>
-                        <a href="https://www.instagram.com/travinh.tourism" 
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="w-12 h-12 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
-                           title="Instagram">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@travinhtravel" 
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="w-12 h-12 bg-red-600 hover:bg-red-700 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
-                           title="YouTube">
-                            <i class="fab fa-youtube text-xl"></i>
-                        </a>
-                    </div>
-                    <div class="mt-4 space-y-2 text-gray-300 text-sm">
+                    <h4 class="font-bold mb-4">Giờ Làm Việc</h4>
+                    <div class="space-y-2 text-gray-300 text-sm">
                         <p>Thứ 2 - Thứ 6: 7:30 - 17:00</p>
                         <p>Thứ 7: 7:30 - 11:30</p>
                     </div>
@@ -704,15 +690,18 @@ $stats = [
 
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
                 <p>&copy; <?php echo $currentYear; ?> Du Lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
-                <div class="flex justify-center gap-6 mt-4">
-                    <a href="https://www.facebook.com/travinh.tourism" target="_blank" class="hover:text-blue-400 transition-colors">
-                        <i class="fab fa-facebook text-2xl"></i>
+                <div class="flex justify-center gap-4 mt-4">
+                    <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
+                        class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="https://www.instagram.com/travinh.tourism" target="_blank" class="hover:text-pink-400 transition-colors">
-                        <i class="fab fa-instagram text-2xl"></i>
+                    <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 hover:from-purple-500 hover:via-pink-400 hover:to-orange-300 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50" title="Instagram">
+                        <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://www.youtube.com/@travinhtravel" target="_blank" class="hover:text-red-400 transition-colors">
-                        <i class="fab fa-youtube text-2xl"></i>
+                    <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
+                        class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50" title="YouTube">
+                        <i class="fab fa-youtube"></i>
                     </a>
                 </div>
             </div>
