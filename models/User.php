@@ -246,6 +246,92 @@ class User {
     }
 
     /**
+     * Cập nhật thông tin user
+     */
+    public function updateUser($userId, $data) {
+        try {
+            // Kiểm tra username đã tồn tại (ngoại trừ user hiện tại)
+            if (isset($data['username'])) {
+                $checkUsername = "SELECT id FROM {$this->table} WHERE username = :username AND id != :id";
+                $stmt = $this->conn->prepare($checkUsername);
+                $stmt->bindParam(':username', $data['username']);
+                $stmt->bindParam(':id', $userId);
+                $stmt->execute();
+                
+                if ($stmt->rowCount() > 0) {
+                    return ['success' => false, 'message' => 'Tên đăng nhập đã tồn tại'];
+                }
+            }
+
+            // Kiểm tra email đã tồn tại (ngoại trừ user hiện tại)
+            if (isset($data['email'])) {
+                $checkEmail = "SELECT id FROM {$this->table} WHERE email = :email AND id != :id";
+                $stmt = $this->conn->prepare($checkEmail);
+                $stmt->bindParam(':email', $data['email']);
+                $stmt->bindParam(':id', $userId);
+                $stmt->execute();
+                
+                if ($stmt->rowCount() > 0) {
+                    return ['success' => false, 'message' => 'Email đã được sử dụng'];
+                }
+            }
+
+            // Xây dựng câu query động
+            $fields = [];
+            $params = [':id' => $userId];
+
+            if (isset($data['username'])) {
+                $fields[] = "username = :username";
+                $params[':username'] = $data['username'];
+            }
+            if (isset($data['email'])) {
+                $fields[] = "email = :email";
+                $params[':email'] = $data['email'];
+            }
+            if (isset($data['full_name'])) {
+                $fields[] = "full_name = :full_name";
+                $params[':full_name'] = $data['full_name'];
+            }
+            if (isset($data['phone'])) {
+                $fields[] = "phone = :phone";
+                $params[':phone'] = $data['phone'];
+            }
+            if (isset($data['role'])) {
+                $fields[] = "role = :role";
+                $params[':role'] = $data['role'];
+            }
+            if (isset($data['status'])) {
+                $fields[] = "status = :status";
+                $params[':status'] = $data['status'];
+            }
+            if (isset($data['password']) && !empty($data['password'])) {
+                $fields[] = "password = :password";
+                $params[':password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+
+            if (empty($fields)) {
+                return ['success' => false, 'message' => 'Không có dữ liệu để cập nhật'];
+            }
+
+            $query = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+
+            foreach ($params as $key => $value) {
+                $stmt->bindValue($key, $value);
+            }
+
+            if ($stmt->execute()) {
+                return ['success' => true, 'message' => 'Cập nhật thành công'];
+            }
+
+            return ['success' => false, 'message' => 'Cập nhật thất bại'];
+
+        } catch (PDOException $e) {
+            return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
+        }
+    }
+
+    /**
      * Xóa user
      */
     public function deleteUser($userId) {

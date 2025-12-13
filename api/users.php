@@ -44,6 +44,28 @@ try {
             }
             break;
 
+        case 'update':
+            // Cập nhật thông tin user
+            $userId = $data['user_id'];
+            $updateData = [
+                'username' => $data['username'] ?? null,
+                'email' => $data['email'] ?? null,
+                'full_name' => $data['full_name'] ?? null,
+                'phone' => $data['phone'] ?? null,
+                'role' => $data['role'] ?? null,
+                'status' => $data['status'] ?? null,
+                'password' => $data['password'] ?? null
+            ];
+            
+            // Loại bỏ các giá trị null
+            $updateData = array_filter($updateData, function($value) {
+                return $value !== null;
+            });
+            
+            $result = $user->updateUser($userId, $updateData);
+            echo json_encode($result);
+            break;
+
         case 'delete':
             // Xóa user
             $userId = $data['user_id'];

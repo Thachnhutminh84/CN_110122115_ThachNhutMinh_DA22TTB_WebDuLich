@@ -6,6 +6,7 @@
 session_start();
 
 require_once 'config/database.php';
+require_once 'config/google-maps.php';
 require_once 'models/Attraction.php';
 
 // Lấy ID từ URL
@@ -39,13 +40,15 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($attraction->name); ?> - Du Lịch Trà Vinh</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/mobile-enhancements.css">
     <link rel="stylesheet" href="css/header-responsive-fix.css">
     
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&language=vi"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         * {
@@ -139,6 +142,7 @@ try {
             border-radius: 15px;
             padding: 40px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: visible !important;
         }
 
         .detail-sidebar {
@@ -146,7 +150,10 @@ try {
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            height: fit-content;
+            height: auto;
+            position: sticky;
+            top: 20px;
+            overflow: visible !important;
         }
 
         .section-title {
@@ -459,6 +466,21 @@ try {
                     <?php echo nl2br(htmlspecialchars($attraction->description)); ?>
                 </div>
 
+                <!-- Hướng Dẫn Tham Quan -->
+                <div style="margin-top: 30px; padding: 20px; background: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 8px;">
+                    <h3 style="margin: 0 0 15px 0; color: #1f2937; font-size: 1.1em;">
+                        <i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 8px;"></i>
+                        Hướng Dẫn Tham Quan
+                    </h3>
+                    <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.8;">
+                        <li>Nên đến vào sáng sớm để tránh đông đúc</li>
+                        <li>Mang theo nước uống và kem chống nắng</li>
+                        <li>Mặc quần áo thoải mái và giày đi bộ</li>
+                        <li>Tôn trọng các quy tắc và phong tục địa phương</li>
+                        <li>Không xả rác, giữ gìn vệ sinh môi trường</li>
+                    </ul>
+                </div>
+
                 <!-- Thông tin chi tiết -->
                 <div class="info-grid" style="margin-top: 30px;">
                     <?php if (!empty($attraction->year_built)): ?>
@@ -613,31 +635,88 @@ try {
                 </div>
                 <?php endif; ?>
 
+                <!-- Cách Đến Đây -->
+                <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white;">
+                    <h2 style="font-size: 1.8em; margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-directions"></i>
+                        Cách Đến Đây
+                    </h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <h4 style="margin: 0 0 10px 0; font-size: 1.1em;">🚗 Bằng Ô Tô</h4>
+                            <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">Từ trung tâm thành phố, đi theo đường <?php echo htmlspecialchars($attraction->location ?? 'địa chỉ'); ?></p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <h4 style="margin: 0 0 10px 0; font-size: 1.1em;">🚌 Bằng Xe Buýt</h4>
+                            <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">Có nhiều tuyến xe buýt đi qua khu vực này, hỏi tài xế để được chỉ dẫn</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; backdrop-filter: blur(10px);">
+                            <h4 style="margin: 0 0 10px 0; font-size: 1.1em;">🚕 Bằng Taxi/Grab</h4>
+                            <p style="margin: 0; font-size: 0.95em; line-height: 1.6;">Sử dụng ứng dụng Grab hoặc gọi taxi trực tiếp đến địa chỉ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phân Loại Món Ăn -->
+                <div style="margin-top: 40px;">
+                    <h2 style="font-size: 1.8em; color: #1f2937; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #3b82f6;">
+                        <i class="fas fa-utensils" style="color: #f59e0b; margin-right: 10px;"></i>
+                        Phân Loại Món Ăn
+                    </h2>
+                    <p style="color: #6b7280; margin-bottom: 20px;">Khám phá đa dạng ẩm thực Trà Vinh qua các danh mục món ăn đặc trưng</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <a href="am-thuc.php?category=Bun-Pho" style="text-decoration: none; padding: 20px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 12px; text-align: center; transition: transform 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; position: relative; z-index: 10; cursor: pointer;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px; pointer-events: none;">🍜</div>
+                            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 1.1em; pointer-events: none;">Bún - Phở</h4>
+                            <p style="margin: 0; color: #6b7280; font-size: 0.9em; pointer-events: none;">Bún nước lèo, bún sương, phở Khmer</p>
+                        </a>
+
+                        <a href="am-thuc.php?category=Banh-Dac-San" style="text-decoration: none; padding: 20px; background: linear-gradient(135deg, #c7ceea 0%, #b2a4de 100%); border-radius: 12px; text-align: center; transition: transform 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; position: relative; z-index: 10; cursor: pointer;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px; pointer-events: none;">🥖</div>
+                            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 1.1em; pointer-events: none;">Bánh Đặc Sản</h4>
+                            <p style="margin: 0; color: #6b7280; font-size: 0.9em; pointer-events: none;">Bánh xèo, bánh căn, bánh ít</p>
+                        </a>
+
+                        <a href="am-thuc.php?category=Mon-Thit" style="text-decoration: none; padding: 20px; background: linear-gradient(135deg, #f5a9b8 0%, #f78fb3 100%); border-radius: 12px; text-align: center; transition: transform 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; position: relative; z-index: 10; cursor: pointer;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px; pointer-events: none;">🍖</div>
+                            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 1.1em; pointer-events: none;">Món Thịt</h4>
+                            <p style="margin: 0; color: #6b7280; font-size: 0.9em; pointer-events: none;">Chủ ủ rang me, thịt nướng Khmer</p>
+                        </a>
+
+                        <a href="am-thuc.php?category=Che-Trang-Mieng" style="text-decoration: none; padding: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 12px; text-align: center; transition: transform 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: block; position: relative; z-index: 10; cursor: pointer;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px; pointer-events: none;">🍰</div>
+                            <h4 style="margin: 0 0 8px 0; color: #1f2937; font-size: 1.1em; pointer-events: none;">Chè - Tráng Miệng</h4>
+                            <p style="margin: 0; color: #6b7280; font-size: 0.9em; pointer-events: none;">Chè Khmer, bánh flan, chè thái</p>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Google Maps Section -->
-                <div class="map-container">
-                    <h2 class="section-title">
+                <div style="margin-top: 40px; background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);">
+                    <h2 style="font-size: 1.8em; color: #1f2937; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px solid #3b82f6;">
                         <i class="fas fa-map-location-dot"></i>
                         Bản Đồ & Vị Trí
                     </h2>
                     
-                    <div id="map"></div>
+                    <button onclick="window.open('https://www.google.com/maps/search/<?php echo urlencode($attraction->location . ', Trà Vinh'); ?>', '_blank')" style="width: 100%; height: 400px; border-radius: 12px; border: none; background: #000000; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 40px; box-sizing: border-box;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 5em; margin-bottom: 20px;">📍</div>
+                            <h3 style="margin: 0 0 10px 0; color: #ffffff; font-size: 1.5em; font-weight: 700;">Xem Bản Đồ Trên Google Maps</h3>
+                            <p style="margin: 0; color: #ffffff; font-size: 1em; font-weight: 500;"><?php echo htmlspecialchars($attraction->location); ?></p>
+                            <p style="margin: 15px 0 0 0; color: #ffffff; font-weight: 600; font-size: 0.95em;">👆 Click để xem chi tiết</p>
+                        </div>
+                    </button>
                     
-                    <div class="map-actions">
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=<?php echo $attraction->latitude ?? '9.9347'; ?>,<?php echo $attraction->longitude ?? '106.3428'; ?>" 
-                           target="_blank"
-                           class="map-btn map-btn-primary">
-                            <i class="fas fa-directions"></i>
-                            Chỉ Đường
-                        </a>
-                        
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
                         <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode($attraction->name . ', ' . $attraction->location); ?>" 
                            target="_blank"
-                           class="map-btn map-btn-secondary">
+                           style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 14px;">
                             <i class="fas fa-external-link-alt"></i>
                             Xem Trên Google Maps
                         </a>
                         
-                        <button onclick="copyCoordinates()" class="map-btn map-btn-outline">
+                        <button onclick="copyCoordinates()" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; color: #6b7280; border: 2px solid #e5e7eb; text-decoration: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px;">
                             <i class="fas fa-copy"></i>
                             Sao Chép Tọa Độ
                         </button>
@@ -692,11 +771,39 @@ try {
                             <?php echo htmlspecialchars($attraction->category ?? 'N/A'); ?>
                         </span>
                     </div>
+
+                    <div class="quick-info-item">
+                        <span class="quick-info-label">Giờ mở cửa:</span>
+                        <span class="quick-info-value">
+                            <?php echo htmlspecialchars($attraction->opening_hours ?? 'Liên hệ'); ?>
+                        </span>
+                    </div>
+
+                    <div class="quick-info-item">
+                        <span class="quick-info-label">Vé vào:</span>
+                        <span class="quick-info-value">
+                            <?php echo htmlspecialchars($attraction->ticket_price ?? 'Miễn phí'); ?>
+                        </span>
+                    </div>
+
+                    <div class="quick-info-item">
+                        <span class="quick-info-label">Liên hệ:</span>
+                        <span class="quick-info-value">
+                            <?php echo htmlspecialchars($attraction->contact ?? '0294.3855.246'); ?>
+                        </span>
+                    </div>
+
+                    <div class="quick-info-item">
+                        <span class="quick-info-label">Thời gian tốt:</span>
+                        <span class="quick-info-value">
+                            <?php echo htmlspecialchars($attraction->best_time ?? 'Cả năm'); ?>
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Share Buttons -->
                 <div style="margin-top: 20px; text-align: center;">
-                    <button onclick="shareAttraction()" class="btn btn-secondary">
+                    <button onclick="shareAttraction()" style="width: 100%; padding: 12px 20px; background: rgba(255, 255, 255, 0.2); color: #000000; border: 2px solid white; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
                         <i class="fas fa-share-alt"></i>
                         Chia Sẻ
                     </button>
@@ -705,31 +812,7 @@ try {
         </div>
     </div>
 
-    <script src="js/google-maps.js"></script>
     <script>
-        // Khởi tạo Google Maps
-        document.addEventListener('DOMContentLoaded', function() {
-            const lat = <?php echo $attraction->latitude ?? '9.9347'; ?>;
-            const lng = <?php echo $attraction->longitude ?? '106.3428'; ?>;
-            const title = '<?php echo addslashes($attraction->name); ?>';
-            const address = '<?php echo addslashes($attraction->location); ?>';
-            
-            // Kiểm tra nếu Google Maps đã load
-            if (typeof google !== 'undefined') {
-                initMap(lat, lng, title, address);
-            } else {
-                console.error('❌ Google Maps API chưa được load');
-                document.getElementById('map').innerHTML = `
-                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f3f4f6; border-radius: 15px;">
-                        <div style="text-align: center; padding: 40px;">
-                            <i class="fas fa-map-marked-alt" style="font-size: 3em; color: #d1d5db; margin-bottom: 15px;"></i>
-                            <p style="color: #6b7280; margin: 0;">Không thể tải bản đồ. Vui lòng kiểm tra API key.</p>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-
         function shareAttraction() {
             const url = window.location.href;
             const title = '<?php echo addslashes($attraction->name); ?>';
@@ -758,6 +841,12 @@ try {
             });
         }
     </script>
+    
+    <!-- Footer -->
+    <?php include 'components/footer.php'; ?>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Mobile Menu & Responsive JS -->
     <script src="js/mobile-menu.js"></script>

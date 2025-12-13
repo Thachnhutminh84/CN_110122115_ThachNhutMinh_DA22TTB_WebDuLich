@@ -331,9 +331,23 @@ $statusNames = [
                 <i class="fas fa-envelope"></i>
                 Quản Lý Liên Hệ
             </h1>
-            <a href="index.php" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Quay Lại
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="quan-ly-users.php" class="back-btn">
+                    <i class="fas fa-users-cog"></i> Quản Lý Tài Khoản
+                </a>
+                <a href="quan-ly-booking.php" class="back-btn">
+                    <i class="fas fa-calendar-check"></i> Quản Lý Booking
+                </a>
+                <a href="quan-ly-dat-dich-vu.php" class="back-btn">
+                    <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                </a>
+                <a href="quan-ly-xac-nhan-thanh-toan.php" class="back-btn">
+                    <i class="fas fa-money-check-alt"></i> Quản Lý Thanh Toán
+                </a>
+                <a href="index.php" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Quay Lại
+                </a>
+            </div>
         </div>
     </div>
 

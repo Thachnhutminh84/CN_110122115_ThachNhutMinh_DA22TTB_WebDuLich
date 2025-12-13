@@ -1,24 +1,42 @@
-# Cấu hình nhạy cảm
-config/oauth.php
+# PHP
+*.php~
+*.phtml
+.DS_Store
 
-# Thư mục tạm
-*.log
-*.tmp
+# Config files (chứa sensitive data)
+config/database.php
+config/vnpay.php
+config/oauth.php
+admin/oauth-config.php
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
 Thumbs.db
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+# Logs
+*.log
+error_log
 
-# Dependencies (nếu có)
-vendor/
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Node modules (nếu có)
 node_modules/
+package-lock.json
 
-# File backup
-*~ 
-*.bak
-* - Copy.php
-* - Copy.*
+# Composer
+vendor/
+composer.lock
+
+# Environment
+.env
+.env.local

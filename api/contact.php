@@ -23,8 +23,16 @@ try {
 
     // Xử lý POST - Tạo liên hệ mới
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Lấy dữ liệu từ form
-        $data = json_decode(file_get_contents("php://input"));
+        // Lấy dữ liệu từ form (hỗ trợ cả JSON và FormData)
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+        
+        if (strpos($contentType, 'application/json') !== false) {
+            // Dữ liệu JSON
+            $data = json_decode(file_get_contents("php://input"));
+        } else {
+            // Dữ liệu FormData hoặc POST thông thường
+            $data = (object) $_POST;
+        }
         
         // Kiểm tra action (theo tài liệu API)
         $action = $data->action ?? 'create';
@@ -32,25 +40,28 @@ try {
         if ($action === 'create') {
             // Kiểm tra dữ liệu bắt buộc
             $name = $data->name ?? $data->full_name ?? '';
+            $email = $data->email ?? '';
+            $subject = $data->subject ?? '';
+            $message = $data->message ?? '';
             
             if (
                 !empty($name) &&
-                !empty($data->email) &&
-                !empty($data->subject) &&
-                !empty($data->message)
+                !empty($email) &&
+                !empty($subject) &&
+                !empty($message)
             ) {
                 // Validate email
-                if (!filter_var($data->email, FILTER_VALIDATE_EMAIL)) {
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     throw new Exception("Email không hợp lệ");
                 }
 
                 // Gán dữ liệu
                 $contact->contact_id = $contact->generateContactId();
                 $contact->full_name = $name;
-                $contact->email = $data->email;
+                $contact->email = $email;
                 $contact->phone = $data->phone ?? '';
-                $contact->subject = $data->subject;
-                $contact->message = $data->message;
+                $contact->subject = $subject;
+                $contact->message = $message;
                 $contact->ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
 
                 // Tạo liên hệ

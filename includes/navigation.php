@@ -58,6 +58,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 <a href="am-thuc.php" class="nav-link-desktop <?php echo $currentPage === 'am-thuc.php' ? 'active' : ''; ?>">
                     <i class="fas fa-utensils mr-2"></i>Ẩm Thực
                 </a>
+                <a href="danh-sach-dich-vu.php" class="nav-link-desktop <?php echo $currentPage === 'danh-sach-dich-vu.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-concierge-bell mr-2"></i>Dịch Vụ
+                </a>
+                <a href="lich-dat-cua-toi.php" class="nav-link-desktop <?php echo $currentPage === 'lich-dat-cua-toi.php' ? 'active' : ''; ?>">
+                    <i class="fas fa-calendar-check mr-2"></i>Lịch Đặt
+                </a>
                 <a href="lien-he.php" class="nav-link-desktop <?php echo $currentPage === 'lien-he.php' ? 'active' : ''; ?>">
                     <i class="fas fa-envelope mr-2"></i>Liên Hệ
                 </a>
@@ -82,6 +88,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             </a>
                             <a href="quan-ly-booking.php" class="dropdown-link">
                                 <i class="fas fa-calendar-check"></i>Quản Lý Booking
+                            </a>
+                            <a href="quan-ly-xac-nhan-thanh-toan.php" class="dropdown-link">
+                                <i class="fas fa-money-check-alt"></i>Quản Lý Thanh Toán
                             </a>
                             <a href="quan-ly-lien-he.php" class="dropdown-link">
                                 <i class="fas fa-envelope-open-text"></i>Quản Lý Liên Hệ

@@ -77,6 +77,8 @@ $categoryNames = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Địa Điểm Du Lịch - Trà Vinh</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/attractions-redesign.css">
     <link rel="stylesheet" href="css/datetime.css">
@@ -763,49 +765,13 @@ $categoryNames = [
         <?php endif; ?>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" style="background: linear-gradient(135deg, #1f2937 0%, #111827 100%); padding: 3rem 0;">
-        <div class="footer-content" style="text-align: center;">
-            <div style="margin-bottom: 1.5rem;">
-                <h3 style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">
-                    <i class="fas fa-map-marked-alt" style="margin-right: 8px; -webkit-text-fill-color: #3b82f6;"></i>
-                    Du Lịch Trà Vinh
-                </h3>
-                <p style="color: #9ca3af; font-size: 0.95rem;">Khám phá vẻ đẹp văn hóa Khmer độc đáo</p>
-            </div>
-            
-            <!-- Social Media Icons -->
-            <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem;">
-                <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                    style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #1877f2, #0d5bbd); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);"
-                    onmouseover="this.style.transform='translateY(-5px) scale(1.1)'; this.style.boxShadow='0 8px 25px rgba(24, 119, 242, 0.6)';"
-                    onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(24, 119, 242, 0.4)';"
-                    title="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                    style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);"
-                    onmouseover="this.style.transform='translateY(-5px) scale(1.1)'; this.style.boxShadow='0 8px 25px rgba(225, 48, 108, 0.6)';"
-                    onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(225, 48, 108, 0.4)';"
-                    title="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                    style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #ff0000, #cc0000); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);"
-                    onmouseover="this.style.transform='translateY(-5px) scale(1.1)'; this.style.boxShadow='0 8px 25px rgba(255, 0, 0, 0.6)';"
-                    onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(255, 0, 0, 0.4)';"
-                    title="YouTube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
-            
-            <!-- Copyright -->
-            <div style="border-top: 1px solid #374151; padding-top: 1.5rem;">
-                <p style="color: #6b7280; font-size: 0.9rem;">&copy; <?php echo date('Y'); ?> Du Lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
-            </div>
-        </div>
-    </footer>
 
+
+    <!-- Footer -->
+    <?php include 'components/footer.php'; ?>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/datetime.js"></script>
     <script src="js/search-attractions.js"></script>
     

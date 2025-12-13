@@ -169,9 +169,7 @@ INSERT INTO foods (food_id, name, name_vi, name_khmer, category, description, in
 '["Nước cốt dừa", "Sữa", "Đường", "Cơm dừa"]', 
 '10.000 - 20.000 VNĐ', 
 'hinhanh/DulichtpTV/kem mới .jpg', 
-'Trà Vinh', 'Cả ngày', 'active'),
-
-
+'Trà Vinh', 'Cả ngày', 'active');
 
 
 -- *********************************************

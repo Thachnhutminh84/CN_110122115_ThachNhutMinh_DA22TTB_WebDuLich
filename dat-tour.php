@@ -1,52 +1,16 @@
 <?php
 /**
- * Trang Đặt Tour - PHP Version
+ * Trang Đặt Tour với Thanh Toán VNPay
  */
-
 session_start();
-
-require_once 'config/database.php';
-require_once 'models/Attraction.php';
-
-// Lấy ID từ URL
-$attractionId = isset($_GET['id']) ? $_GET['id'] : '';
-$success = false;
-$error = '';
-
-if (empty($attractionId)) {
-    header('Location: dia-diem-du-lich-dynamic.php');
-    exit();
-}
-
-// Khởi tạo database
-try {
-    $database = new Database();
-    $db = $database->getConnection();
-    $attraction = new Attraction($db);
-    
-    $attraction->attraction_id = $attractionId;
-    
-    if (!$attraction->readOne()) {
-        header('Location: dia-diem-du-lich-dynamic.php');
-        exit();
-    }
-    
-} catch (Exception $e) {
-    $error = $e->getMessage();
-}
-
-// Không xử lý form submit ở đây nữa - sẽ dùng AJAX
 ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đặt Tour - <?php echo htmlspecialchars($attraction->name); ?></title>
+    <title>Đặt Tour - Thanh Toán VNPay</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/mobile-enhancements.css">
-    <link rel="stylesheet" href="css/header-responsive-fix.css">
     <style>
         * {
             margin: 0;
@@ -62,8 +26,8 @@ try {
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 700px;
+            margin: 50px auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
@@ -82,45 +46,8 @@ try {
             margin-bottom: 10px;
         }
 
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .back-link {
-            display: inline-block;
-            color: white;
-            text-decoration: none;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .back-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .content {
+        .form-content {
             padding: 40px;
-        }
-
-        .attraction-info {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-
-        .attraction-info h2 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-
-        .attraction-info p {
-            opacity: 0.9;
         }
 
         .form-group {
@@ -129,317 +56,191 @@ try {
 
         .form-group label {
             display: block;
-            font-weight: 600;
-            color: #1f2937;
             margin-bottom: 8px;
-            font-size: 1.1em;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.05rem;
         }
 
-        .form-group label .required {
-            color: #ef4444;
+        .form-group label i {
+            margin-right: 8px;
+            color: #3498db;
         }
 
-        .form-control {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e5e7eb;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 1rem;
             transition: all 0.3s;
         }
 
-        .form-control:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        textarea.form-control {
-            resize: vertical;
-            min-height: 100px;
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
 
-        .btn {
-            width: 100%;
-            padding: 18px;
-            border: none;
+        .payment-option {
+            padding: 15px;
+            border: 2px solid #ecf0f1;
             border-radius: 10px;
-            font-size: 1.2em;
-            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .payment-option:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .payment-option.selected {
+            border-color: #27ae60;
+            background: #d4edda;
+        }
+
+        .payment-option input[type="radio"] {
+            width: auto;
+        }
+
+        #bankCodeGroup {
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #27ae60;
             color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .alert {
-            padding: 15px 20px;
+            border: none;
             border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 2px solid #10b981;
-        }
-
-        .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 2px solid #ef4444;
-        }
-
-        .success-message {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .success-message i {
-            font-size: 5em;
-            color: #10b981;
-            margin-bottom: 20px;
-        }
-
-        .success-message h2 {
-            font-size: 2em;
-            color: #1f2937;
-            margin-bottom: 15px;
-        }
-
-        .success-message p {
-            color: #6b7280;
-            font-size: 1.1em;
-            margin-bottom: 30px;
-        }
-
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            padding: 15px 30px;
-            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s;
         }
 
-        .btn-secondary:hover {
-            background: #4b5563;
+        .btn-submit:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
         }
 
-        .hidden {
-            display: none;
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <a href="chi-tiet-dia-diem.php?id=<?php echo urlencode($attractionId); ?>" class="back-link">
-                <i class="fas fa-arrow-left"></i> Quay Lại
-            </a>
-            <h1>🎫 Đặt Tour Tham Quan</h1>
-            <p>Điền thông tin để đặt tour</p>
+            <h1>🎫 Đặt Tour Du Lịch</h1>
+            <p>Điền thông tin và chọn phương thức thanh toán</p>
         </div>
 
-        <div class="content">
-            <?php if ($success): ?>
-                <div class="success-message">
-                    <i class="fas fa-check-circle"></i>
-                    <h2>Đặt Tour Thành Công!</h2>
-                    <p>
-                        Cảm ơn bạn đã đặt tour tham quan <strong><?php echo htmlspecialchars($attraction->name); ?></strong>.<br>
-                        Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận thông tin.
-                    </p>
-                    <a href="dia-diem-du-lich-dynamic.php" class="btn-secondary">
-                        <i class="fas fa-home"></i> Về Trang Chủ
-                    </a>
-                </div>
-            <?php else: ?>
-                <div class="attraction-info">
-                    <h2><?php echo htmlspecialchars($attraction->name); ?></h2>
-                    <p>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <?php echo htmlspecialchars($attraction->location); ?>
-                    </p>
-                    <p>
-                        <i class="fas fa-ticket-alt"></i>
-                        Giá vé: <?php echo htmlspecialchars($attraction->ticket_price ?? 'Miễn phí'); ?>
-                    </p>
+        <div class="form-content">
+            <div class="info-box">
+                <strong>💡 Lưu ý:</strong> Chọn thanh toán VNPay để thanh toán online ngay
+            </div>
+
+            <form id="bookingForm" method="POST" action="process-booking.php">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Họ và tên *</label>
+                        <input type="text" name="customer_name" required placeholder="Nguyễn Văn A">
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Số điện thoại *</label>
+                        <input type="tel" name="customer_phone" required placeholder="0901234567">
+                    </div>
                 </div>
 
-                <?php if (!empty($error)): ?>
-                    <div class="alert alert-error">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <?php echo htmlspecialchars($error); ?>
-                    </div>
-                <?php endif; ?>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email *</label>
+                    <input type="email" name="customer_email" required placeholder="email@example.com">
+                </div>
 
-                <!-- Alert Messages -->
-                <div id="alertMessage" class="hidden"></div>
-
-                <form id="bookingForm">
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="customer_name">
-                            Họ và Tên <span class="required">*</span>
-                        </label>
-                        <input type="text" 
-                               id="customer_name" 
-                               name="customer_name" 
-                               class="form-control" 
-                               placeholder="Nguyễn Văn A"
-                               required>
+                        <label><i class="fas fa-users"></i> Số người lớn *</label>
+                        <input type="number" name="num_adults" required min="1" value="1">
                     </div>
 
                     <div class="form-group">
-                        <label for="customer_phone">
-                            Số Điện Thoại <span class="required">*</span>
-                        </label>
-                        <input type="tel" 
-                               id="customer_phone" 
-                               name="customer_phone" 
-                               class="form-control" 
-                               placeholder="0912345678"
-                               required>
+                        <label><i class="fas fa-child"></i> Số trẻ em</label>
+                        <input type="number" name="num_children" min="0" value="0">
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="customer_email">
-                            Email
-                        </label>
-                        <input type="email" 
-                               id="customer_email" 
-                               name="customer_email" 
-                               class="form-control" 
-                               placeholder="email@example.com">
-                    </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar"></i> Ngày khởi hành *</label>
+                    <input type="date" name="departure_date" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="booking_date">
-                            Ngày Tham Quan <span class="required">*</span>
-                        </label>
-                        <input type="date" 
-                               id="booking_date" 
-                               name="booking_date" 
-                               class="form-control"
-                               min="<?php echo date('Y-m-d'); ?>"
-                               required>
-                    </div>
+                <div class="form-group">
+                    <label><i class="fas fa-comment"></i> Yêu cầu đặc biệt</label>
+                    <textarea name="special_requests" rows="3" placeholder="Ghi chú thêm (nếu có)"></textarea>
+                </div>
 
-                    <div class="form-group">
-                        <label for="number_of_people">
-                            Số Người
-                        </label>
-                        <input type="number" 
-                               id="number_of_people" 
-                               name="number_of_people" 
-                               class="form-control" 
-                               value="1"
-                               min="1"
-                               max="100">
-                    </div>
+                <input type="hidden" name="payment_method" value="online">
 
-                    <div class="form-group">
-                        <label for="special_requests">
-                            Ghi Chú
-                        </label>
-                        <textarea id="special_requests" 
-                                  name="special_requests" 
-                                  class="form-control" 
-                                  placeholder="Yêu cầu đặc biệt, câu hỏi..."></textarea>
-                    </div>
-
-                    <button type="submit" id="submitBtn" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i>
-                        Xác Nhận Đặt Tour
-                    </button>
-                </form>
-            <?php endif; ?>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-check-circle"></i> Đặt Tour Ngay
+                </button>
+            </form>
         </div>
     </div>
 
     <script>
-        // Xử lý form submit
-        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const alertMessage = document.getElementById('alertMessage');
-            
-            // Disable button
-            submitBtn.disabled = true;
+        // Xử lý submit form - Hiển thị loading
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('.btn-submit');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-            
-            // Lấy dữ liệu form
-            const formData = {
-                attraction_id: '<?php echo $attractionId; ?>',
-                customer_name: document.getElementById('customer_name').value,
-                customer_phone: document.getElementById('customer_phone').value,
-                customer_email: document.getElementById('customer_email').value,
-                booking_date: document.getElementById('booking_date').value,
-                number_of_people: parseInt(document.getElementById('number_of_people').value),
-                special_requests: document.getElementById('special_requests').value
-            };
-            
-            try {
-                const response = await fetch('api/bookings.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                // Hiển thị thông báo
-                alertMessage.classList.remove('hidden');
-                
-                if (result.success) {
-                    alertMessage.className = 'alert alert-success';
-                    alertMessage.innerHTML = '<i class="fas fa-check-circle"></i>' + result.message;
-                    
-                    // Redirect sau 2 giây
-                    setTimeout(() => {
-                        window.location.href = 'dia-diem-du-lich-dynamic.php';
-                    }, 2000);
-                } else {
-                    alertMessage.className = 'alert alert-error';
-                    alertMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i>' + result.message;
-                    
-                    // Enable button
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Xác Nhận Đặt Tour';
-                }
-                
-            } catch (error) {
-                alertMessage.classList.remove('hidden');
-                alertMessage.className = 'alert alert-error';
-                alertMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i>Có lỗi xảy ra. Vui lòng thử lại!';
-                
-                // Enable button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Xác Nhận Đặt Tour';
-            }
+            submitBtn.disabled = true;
+            // Form sẽ submit bình thường đến process-booking.php
         });
+
+        // Set ngày tối thiểu là ngày mai
+        const dateInput = document.querySelector('input[name="departure_date"]');
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
     </script>
-    
-    <!-- Mobile Menu & Responsive JS -->
-    <script src="js/mobile-menu.js"></script>
 </body>
 </html>

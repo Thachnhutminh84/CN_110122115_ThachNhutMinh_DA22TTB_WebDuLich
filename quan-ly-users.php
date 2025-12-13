@@ -198,88 +198,229 @@ $statusNames = [
             color: #1f2937;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .users-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
-        th {
+        .user-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .user-row:hover {
             background: #f9fafb;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #4b5563;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .user-row:nth-child(even) {
+            background: #fafbfc;
+        }
+
+        .user-row:nth-child(even):hover {
+            background: #f3f4f6;
+        }
+
+        .user-row-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-row-id {
+            flex-shrink: 0;
+        }
+
+        .id-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .user-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-row-username {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-row-username i {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .user-row-name {
+            color: #6b7280;
             font-size: 0.9em;
-            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #f3f4f6;
+        .user-row-contact {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        tr:hover {
-            background: #f9fafb;
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #6b7280;
+            font-size: 0.85em;
+        }
+
+        .contact-item i {
+            color: #3b82f6;
+            width: 14px;
+        }
+
+        .user-row-middle {
+            display: flex;
+            gap: 12px;
+            margin: 0 20px;
+            flex-shrink: 0;
+        }
+
+        .user-row-badge {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-row-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .badge {
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85em;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
             display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .user-info {
-            font-weight: 600;
+            font-weight: 700;
             color: #1f2937;
+            font-size: 1em;
         }
 
         .user-email {
             color: #6b7280;
-            font-size: 0.9em;
-            margin-top: 3px;
+            font-size: 0.88em;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .user-email i {
+            width: 16px;
         }
 
         .action-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 10px 12px;
+            border-radius: 8px;
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 1em;
             font-weight: 600;
             transition: all 0.3s;
-            display: inline-block;
-            margin-right: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border: none;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .action-btn i {
+            font-size: 1.1em;
         }
 
         .btn-view {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
 
         .btn-view:hover {
-            background: #2563eb;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
         }
 
         .btn-ban {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
         .btn-ban:hover {
-            background: #d97706;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
+
+        .btn-unlock {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-unlock:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
 
         .btn-delete {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
         .btn-delete:hover {
-            background: #dc2626;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
 
         .no-data {
@@ -406,13 +547,81 @@ $statusNames = [
             background: #4b5563;
         }
 
+        @media (max-width: 1024px) {
+            .user-row {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .user-row-left {
+                width: 100%;
+                order: 1;
+            }
+
+            .user-row-middle {
+                order: 2;
+                margin: 0;
+            }
+
+            .user-row-actions {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
-            table {
-                font-size: 0.9em;
+
+            .user-row {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .user-row-left {
+                width: 100%;
+                gap: 12px;
+            }
+
+            .id-badge {
+                width: 45px;
+                height: 45px;
+                font-size: 1em;
+            }
+
+            .user-row-username {
+                font-size: 0.95em;
+            }
+
+            .user-row-name {
+                font-size: 0.85em;
+            }
+
+            .contact-item {
+                font-size: 0.8em;
+            }
+
+            .user-row-middle {
+                width: 100%;
+                margin: 8px 0;
+            }
+
+            .user-row-actions {
+                width: 100%;
+                gap: 6px;
+            }
+
+            .action-btn {
+                width: 36px;
+                height: 36px;
+                padding: 8px;
+            }
+
+            .action-btn i {
+                font-size: 1em;
             }
 
             .modal-content {
@@ -428,6 +637,16 @@ $statusNames = [
                 width: 100%;
                 margin-bottom: 5px;
             }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-content > div {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -439,9 +658,23 @@ $statusNames = [
                 <i class="fas fa-users-cog"></i>
                 Quản Lý Tài Khoản
             </h1>
-            <a href="index.php" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Quay Lại
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="quan-ly-booking.php" class="back-btn">
+                    <i class="fas fa-calendar-check"></i> Quản Lý Booking
+                </a>
+                <a href="quan-ly-dat-dich-vu.php" class="back-btn">
+                    <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                </a>
+                <a href="quan-ly-xac-nhan-thanh-toan.php" class="back-btn">
+                    <i class="fas fa-money-check-alt"></i> Quản Lý Thanh Toán
+                </a>
+                <a href="quan-ly-lien-he.php" class="back-btn">
+                    <i class="fas fa-envelope"></i> Quản Lý Tin Nhắn
+                </a>
+                <a href="index.php" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Quay Lại
+                </a>
+            </div>
         </div>
     </div>
 
@@ -517,75 +750,72 @@ $statusNames = [
             </div>
 
             <?php if (!empty($users)): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên đăng nhập</th>
-                        <th>Thông tin</th>
-                        <th>Vai trò</th>
-                        <th>Trạng thái</th>
-                        <th>Đăng nhập</th>
-                        <th>Ngày tạo</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($users as $u): ?>
-                    <tr>
-                        <td><strong><?php echo htmlspecialchars($u['id']); ?></strong></td>
-                        <td><strong><?php echo htmlspecialchars($u['username']); ?></strong></td>
-                        <td>
-                            <div class="user-info"><?php echo htmlspecialchars($u['full_name'] ?? 'N/A'); ?></div>
-                            <div class="user-email">
-                                <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($u['email']); ?>
+            <div class="users-list">
+                <?php foreach ($users as $u): ?>
+                <div class="user-row">
+                    <div class="user-row-left">
+                        <div class="user-row-id">
+                            <span class="id-badge"><?php echo htmlspecialchars($u['id']); ?></span>
+                        </div>
+                        <div class="user-row-info">
+                            <div class="user-row-username">
+                                <i class="fas fa-user-circle"></i>
+                                <?php echo htmlspecialchars($u['username']); ?>
                             </div>
-                            <?php if (!empty($u['phone'])): ?>
-                            <div class="user-email">
-                                <i class="fas fa-phone"></i> <?php echo htmlspecialchars($u['phone']); ?>
+                            <div class="user-row-name">
+                                <?php echo htmlspecialchars($u['full_name'] ?? 'N/A'); ?>
                             </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
+                            <div class="user-row-contact">
+                                <span class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <?php echo htmlspecialchars($u['email']); ?>
+                                </span>
+                                <?php if (!empty($u['phone'])): ?>
+                                <span class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <?php echo htmlspecialchars($u['phone']); ?>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user-row-middle">
+                        <div class="user-row-badge">
                             <span class="badge" style="background: <?php echo $roleColors[$u['role']]; ?>">
                                 <?php echo $roleNames[$u['role']]; ?>
                             </span>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="user-row-badge">
                             <span class="badge" style="background: <?php echo $statusColors[$u['status']]; ?>">
                                 <?php echo $statusNames[$u['status']]; ?>
                             </span>
-                        </td>
-                        <td>
-                            <div><strong><?php echo $u['login_count'] ?? 0; ?></strong> lần</div>
-                            <?php if (!empty($u['last_login'])): ?>
-                            <div class="user-email">
-                                <?php echo date('d/m/Y H:i', strtotime($u['last_login'])); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo date('d/m/Y', strtotime($u['created_at'])); ?></td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="viewUser(<?php echo $u['id']; ?>)">
-                                <i class="fas fa-eye"></i> Xem
-                            </button>
-                            <?php if ($u['status'] !== 'banned'): ?>
-                            <button class="action-btn btn-ban" onclick="toggleBanUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>', 'banned')">
-                                <i class="fas fa-ban"></i> Khóa
-                            </button>
-                            <?php else: ?>
-                            <button class="action-btn btn-view" onclick="toggleBanUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>', 'active')">
-                                <i class="fas fa-unlock"></i> Mở
-                            </button>
-                            <?php endif; ?>
-                            <button class="action-btn btn-delete" onclick="deleteUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>')">
-                                <i class="fas fa-trash"></i> Xóa
-                            </button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+
+                    <div class="user-row-actions">
+                        <button class="action-btn btn-view" onclick="viewUser(<?php echo $u['id']; ?>)" title="Xem chi tiết">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn btn-edit" onclick="editUser(<?php echo $u['id']; ?>)" title="Chỉnh sửa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <?php if ($u['status'] !== 'banned'): ?>
+                        <button class="action-btn btn-ban" onclick="toggleBanUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>', 'banned')" title="Khóa tài khoản">
+                            <i class="fas fa-ban"></i>
+                        </button>
+                        <?php else: ?>
+                        <button class="action-btn btn-unlock" onclick="toggleBanUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>', 'active')" title="Mở khóa">
+                            <i class="fas fa-unlock"></i>
+                        </button>
+                        <?php endif; ?>
+                        <button class="action-btn btn-delete" onclick="deleteUser(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['username']); ?>')" title="Xóa tài khoản">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
             <?php else: ?>
             <div class="no-data">
                 <i class="fas fa-users-slash"></i>
@@ -601,7 +831,7 @@ $statusNames = [
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-user-circle"></i> Chi Tiết Tài Khoản</h3>
-                <span class="close" onclick="closeModal()">&times;</span>
+                <span class="close" onclick="closeModal('viewModal')">&times;</span>
             </div>
             <div class="modal-body" id="modalBody">
                 <div style="text-align: center; padding: 40px;">
@@ -610,8 +840,98 @@ $statusNames = [
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-close-modal" onclick="closeModal()">
+                <button class="btn-close-modal" onclick="closeModal('viewModal')">
                     <i class="fas fa-times"></i> Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chỉnh Sửa -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-edit"></i> Chỉnh Sửa Tài Khoản</h3>
+                <span class="close" onclick="closeModal('editModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" style="display: grid; gap: 20px;">
+                    <input type="hidden" id="edit_user_id">
+                    
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-user"></i> Tên đăng nhập *
+                        </label>
+                        <input type="text" id="edit_username" required
+                               style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-signature"></i> Họ và tên *
+                        </label>
+                        <input type="text" id="edit_full_name" required
+                               style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-envelope"></i> Email *
+                        </label>
+                        <input type="email" id="edit_email" required
+                               style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-phone"></i> Số điện thoại
+                        </label>
+                        <input type="tel" id="edit_phone"
+                               style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-user-tag"></i> Vai trò *
+                        </label>
+                        <select id="edit_role" required
+                                style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                            <option value="user">Người dùng</option>
+                            <option value="manager">Quản lý</option>
+                            <option value="admin">Quản trị viên</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-toggle-on"></i> Trạng thái *
+                        </label>
+                        <select id="edit_status" required
+                                style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                            <option value="active">Đang hoạt động</option>
+                            <option value="inactive">Không hoạt động</option>
+                            <option value="banned">Bị khóa</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; color: #4b5563; margin-bottom: 8px;">
+                            <i class="fas fa-lock"></i> Mật khẩu mới (để trống nếu không đổi)
+                        </label>
+                        <input type="password" id="edit_password" placeholder="Nhập mật khẩu mới..."
+                               style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+                        <small style="color: #6b7280; display: block; margin-top: 5px;">
+                            Chỉ nhập nếu muốn thay đổi mật khẩu
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close-modal" onclick="closeModal('editModal')" style="background: #6b7280; margin-right: 10px;">
+                    <i class="fas fa-times"></i> Hủy
+                </button>
+                <button class="btn-close-modal" onclick="saveUser()" style="background: #10b981;">
+                    <i class="fas fa-save"></i> Lưu Thay Đổi
                 </button>
             </div>
         </div>
@@ -809,16 +1129,120 @@ $statusNames = [
             }
         }
 
+        // Chỉnh sửa user
+        async function editUser(userId) {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+
+            try {
+                const response = await fetch('api/users.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'get_user',
+                        user_id: userId
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const user = result.user;
+                    document.getElementById('edit_user_id').value = user.id;
+                    document.getElementById('edit_username').value = user.username;
+                    document.getElementById('edit_full_name').value = user.full_name || '';
+                    document.getElementById('edit_email').value = user.email;
+                    document.getElementById('edit_phone').value = user.phone || '';
+                    document.getElementById('edit_role').value = user.role;
+                    document.getElementById('edit_status').value = user.status;
+                    document.getElementById('edit_password').value = '';
+                } else {
+                    alert('Không thể tải thông tin user');
+                    closeModal('editModal');
+                }
+            } catch (error) {
+                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                closeModal('editModal');
+            }
+        }
+
+        // Lưu thay đổi
+        async function saveUser() {
+            const userId = document.getElementById('edit_user_id').value;
+            const username = document.getElementById('edit_username').value.trim();
+            const fullName = document.getElementById('edit_full_name').value.trim();
+            const email = document.getElementById('edit_email').value.trim();
+            const phone = document.getElementById('edit_phone').value.trim();
+            const role = document.getElementById('edit_role').value;
+            const status = document.getElementById('edit_status').value;
+            const password = document.getElementById('edit_password').value;
+
+            // Validate
+            if (!username || !fullName || !email) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
+            }
+
+            if (!confirm('Bạn có chắc muốn lưu thay đổi?')) {
+                return;
+            }
+
+            try {
+                const data = {
+                    action: 'update',
+                    user_id: userId,
+                    username: username,
+                    full_name: fullName,
+                    email: email,
+                    phone: phone,
+                    role: role,
+                    status: status
+                };
+
+                // Chỉ gửi password nếu có nhập
+                if (password) {
+                    data.password = password;
+                }
+
+                const response = await fetch('api/users.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    closeModal('editModal');
+                    location.reload();
+                } else {
+                    alert('Lỗi: ' + result.message);
+                }
+            } catch (error) {
+                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        }
+
         // Đóng modal
-        function closeModal() {
-            document.getElementById('viewModal').style.display = 'none';
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         // Đóng modal khi click bên ngoài
         window.onclick = function(event) {
-            const modal = document.getElementById('viewModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            const viewModal = document.getElementById('viewModal');
+            const editModal = document.getElementById('editModal');
+            
+            if (event.target == viewModal) {
+                viewModal.style.display = 'none';
+            }
+            if (event.target == editModal) {
+                editModal.style.display = 'none';
             }
         }
 

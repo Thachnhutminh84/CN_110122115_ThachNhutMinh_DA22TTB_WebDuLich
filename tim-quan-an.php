@@ -21,8 +21,11 @@ try {
     $restaurant = new Restaurant($db);
     $food = new Food($db);
     
-    // Lấy tham số từ URL
+    // Lấy tham số từ URL (hỗ trợ cả food_type và food_id)
     $foodType = isset($_GET['food_type']) ? $_GET['food_type'] : '';
+    if (empty($foodType) && isset($_GET['food_id'])) {
+        $foodType = $_GET['food_id'];
+    }
     $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
     
     // Lấy tất cả món ăn từ database

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../config/database.php';
  */
 class Restaurant {
     private $conn;
-    private $table_name = "restaurants";
+    private $table_name = "quanans";
 
     public $id;
     public $restaurant_id;

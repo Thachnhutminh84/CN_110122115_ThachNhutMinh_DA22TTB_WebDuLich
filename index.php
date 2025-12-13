@@ -1,768 +1,844 @@
 <?php
 /**
- * Trang chủ Du Lịch Trà Vinh - PHP Version
- * Chuyển đổi từ HTML sang PHP để tích hợp database và tính năng động
+ * Trang chủ Du Lịch Trà Vinh - Bootstrap Version
  */
 
-// Bắt đầu session (không bắt buộc đăng nhập)
 session_start();
 
-// Kiểm tra thông báo đăng xuất
 $logoutSuccess = isset($_GET['logout']) && $_GET['logout'] === 'success';
 
-// Include các file cần thiết
 require_once 'config/database.php';
 require_once 'models/Attraction.php';
 
-// Khởi tạo database và models
 try {
     $database = new Database();
     $db = $database->getConnection();
     $attraction = new Attraction($db);
     
-    // Lấy 3 địa điểm nổi bật nhất
     $featuredAttractions = $attraction->getPopularAttractions(3);
     $attractions = [];
     while ($row = $featuredAttractions->fetch(PDO::FETCH_ASSOC)) {
         $attractions[] = $row;
     }
     
-    // Lấy thống kê tổng quan
     $totalAttractions = $attraction->readAll();
     $attractionCount = $totalAttractions->rowCount();
     
 } catch (Exception $e) {
-    // Nếu có lỗi database, sử dụng dữ liệu mặc định
     $attractions = [
-        [
-            'attraction_id' => 'aobaom',
-            'name' => 'Ao Bà Om',
-            'description' => 'Thắng cảnh quốc gia với truyền thuyết về cuộc thi đắp đập của phụ nữ Khmer và hơn 500 cây dầu cổ thụ kỳ dị.',
-            'category' => 'Di Tích Quốc Gia',
-            'image_url' => 'hinhanh/DulichtpTV/aobaom-02-1024x686.jpg'
-        ],
-        [
-            'attraction_id' => 'chuaang',
-            'name' => 'Chùa Âng',
-            'description' => 'Ngôi chùa Khmer cổ kính nhất với niên đại hơn 1000 năm, kiến trúc Angkor độc đáo và nghệ thuật điêu khắc tinh xảo.',
-            'category' => 'Chùa Khmer Cổ',
-            'image_url' => 'hinhanh/DulichtpTV/maxresdefault.jpg'
-        ],
-        [
-            'attraction_id' => 'bienbadong',
-            'name' => 'Biển Ba Động',
-            'description' => 'Bãi biển hoang sơ với cát trắng và nước trong xanh, là điểm đến lý tưởng cho du lịch nghỉ dưỡng.',
-            'category' => 'Biển Đẹp',
-            'image_url' => 'hinhanh/DulichtpTV/Kham-pha-Khu-du-lich-Bien-Ba-Dong-Tra-Vinh-2022.jpg.webp'
-        ]
+        ['attraction_id' => 'aobaom', 'name' => 'Ao Bà Om', 'description' => 'Thắng cảnh quốc gia với truyền thuyết về cuộc thi đắp đập của phụ nữ Khmer.', 'category' => 'Di Tích Quốc Gia', 'image_url' => 'hinhanh/DulichtpTV/aobaom-02-1024x686.jpg'],
+        ['attraction_id' => 'chuaang', 'name' => 'Chùa Âng', 'description' => 'Ngôi chùa Khmer cổ kính nhất với niên đại hơn 1000 năm.', 'category' => 'Chùa Khmer Cổ', 'image_url' => 'hinhanh/DulichtpTV/maxresdefault.jpg'],
+        ['attraction_id' => 'bienbadong', 'name' => 'Biển Ba Động', 'description' => 'Bãi biển hoang sơ với cát trắng và nước trong xanh.', 'category' => 'Biển Đẹp', 'image_url' => 'hinhanh/DulichtpTV/Kham-pha-Khu-du-lich-Bien-Ba-Dong-Tra-Vinh-2022.jpg.webp']
     ];
-    $attractionCount = 15; // Số mặc định
+    $attractionCount = 15;
 }
 
-// Lấy thời gian hiện tại
 $currentDateTime = date('l, d/m/Y - H:i', time());
 $currentYear = date('Y');
-
-// Thống kê website (có thể lấy từ database sau)
-$stats = [
-    'temples' => '140+',
-    'visitors' => '3.5M',
-    'heritage_sites' => '50+',
-    'ethnic_groups' => '3'
-];
+$stats = ['temples' => '140+', 'visitors' => '3.5M', 'heritage_sites' => '50+', 'ethnic_groups' => '3'];
 ?>
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Du Lịch Tỉnh Trà Vinh - Khám Phá Vẻ Đẹp Đất Khmer</title>
-    <meta name="description" content="Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời của Trà Vinh. Hơn <?php echo $attractionCount; ?> địa điểm du lịch hấp dẫn đang chờ bạn.">
-    <meta name="keywords" content="du lịch Trà Vinh, Khmer, chùa Âng, Ao Bà Om, ẩm thực Khmer">
+    <meta name="description" content="Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời của Trà Vinh.">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/bootstrap-custom.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/datetime.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/mobile-enhancements.css">
-    <link rel="stylesheet" href="css/header-responsive-fix.css">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Du Lịch Tỉnh Trà Vinh - Khám Phá Vẻ Đẹp Đất Khmer">
-    <meta property="og:description" content="Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời của Trà Vinh">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
 </head>
+<body>
 
-<body class="bg-gray-100">
-    <!-- Thông báo đăng xuất thành công -->
+    <!-- Logout Notification -->
     <?php if ($logoutSuccess): ?>
-    <div id="logoutNotification" class="fixed top-20 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center space-x-3 animate-slide-in">
-        <i class="fas fa-check-circle text-2xl"></i>
+    <div class="notification-toast alert alert-success d-flex align-items-center" id="logoutNotification">
+        <i class="fas fa-check-circle fs-4 me-3"></i>
         <div>
-            <p class="font-bold">Đăng xuất thành công!</p>
-            <p class="text-sm">Hẹn gặp lại bạn</p>
+            <strong>Đăng xuất thành công!</strong>
+            <p class="mb-0 small">Hẹn gặp lại bạn</p>
         </div>
-        <button onclick="closeNotification()" class="ml-4 hover:bg-green-600 rounded-full p-1">
-            <i class="fas fa-times"></i>
-        </button>
+        <button type="button" class="btn-close ms-3" onclick="this.parentElement.remove()"></button>
     </div>
     <script>
-        // Tự động ẩn sau 5 giây
         setTimeout(() => {
             const notification = document.getElementById('logoutNotification');
-            if (notification) {
-                notification.style.animation = 'slide-out 0.5s ease-out';
-                setTimeout(() => notification.remove(), 500);
-            }
+            if (notification) notification.remove();
         }, 5000);
-        
-        function closeNotification() {
-            const notification = document.getElementById('logoutNotification');
-            notification.style.animation = 'slide-out 0.5s ease-out';
-            setTimeout(() => notification.remove(), 500);
-        }
     </script>
-    <style>
-        @keyframes slide-in {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        @keyframes slide-out {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-        }
-        .animate-slide-in {
-            animation: slide-in 0.5s ease-out;
-        }
-    </style>
     <?php endif; ?>
-    
-    <!-- Header -->
-    <header class="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex items-center justify-between">
-                <!-- Logo Section -->
-                <div class="flex items-center space-x-3">
-                    <a href="index.php" class="flex items-center space-x-3">
-                        <img src="hinhanh/logo.jpg" alt="Logo Trà Vinh"
-                            class="h-12 md:h-16 w-auto object-contain hover:scale-105 transition-transform duration-300">
-                        <div class="hidden sm:block">
-                            <h1 class="text-lg md:text-2xl font-bold text-red-600 hover:text-red-700 transition-colors">
-                                TRƯỜNG ĐẠI HỌC TRÀ VINH
-                            </h1>
-                            <p class="text-gray-600 text-xs md:text-sm mt-1" id="headerDateTime">
-                                <i class="far fa-clock mr-2"></i>
-                                <span id="currentDateTime"><?php echo $currentDateTime; ?></span>
-                            </p>
-                        </div>
-                    </a>
-                </div>
 
-                <!-- Desktop: Welcome Message / User Info -->
-                <div class="hidden md:block">
+    <!-- Header -->
+    <header class="header-main shadow-sm sticky-top">
+        <div class="container py-2">
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Logo -->
+                <a href="index.php" class="d-flex align-items-center text-decoration-none">
+                    <img src="hinhanh/logo.jpg" alt="Logo Trà Vinh" class="logo-img me-3">
+                    <div class="d-none d-sm-block">
+                        <h1 class="h5 mb-0 text-danger fw-bold">TRƯỜNG ĐẠI HỌC TRÀ VINH</h1>
+                        <small class="text-muted">
+                            <i class="far fa-clock me-1"></i>
+                            <span id="currentDateTime"><?php echo $currentDateTime; ?></span>
+                        </small>
+                    </div>
+                </a>
+
+                <!-- User Info / Welcome -->
+                <div class="d-none d-md-block">
                     <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
-                        <!-- User Logged In -->
-                        <div class="flex items-center gap-4">
-                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-3 rounded-xl shadow-md">
-                                <p class="text-sm text-gray-600">Xin chào,</p>
-                                <p class="text-lg font-bold text-blue-700">
-                                    <i class="fas fa-user-circle mr-2"></i>
-                                    <?php echo htmlspecialchars($_SESSION['full_name']); ?>
-                                </p>
-                                <p class="text-xs text-gray-500 mt-1">
-                                    <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                                        <?php 
-                                        $roleNames = ['admin' => 'Quản trị viên', 'manager' => 'Quản lý', 'user' => 'Người dùng'];
-                                        echo $roleNames[$_SESSION['role']] ?? $_SESSION['role']; 
-                                        ?>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager'): ?>
-                                <a href="quan-ly-users.php" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg">
-                                    <i class="fas fa-users-cog mr-2"></i>Quản Lý
-                                </a>
-                                <?php endif; ?>
-                                <a href="logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>Đăng Xuất
-                                </a>
-                            </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-gradient-light-blue px-4 py-2 rounded-3 shadow-sm">
+                            <small class="text-muted">Xin chào,</small>
+                            <p class="mb-0 fw-bold text-primary">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <?php echo htmlspecialchars($_SESSION['full_name']); ?>
+                            </p>
+                            <span class="badge bg-primary">
+                                <?php 
+                                $roleNames = ['admin' => 'Quản trị viên', 'manager' => 'Quản lý', 'user' => 'Người dùng'];
+                                echo $roleNames[$_SESSION['role']] ?? $_SESSION['role']; 
+                                ?>
+                            </span>
                         </div>
+                        <div class="d-flex flex-column gap-2">
+                            <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager'): ?>
+                            <a href="quan-ly-users.php" class="btn btn-purple btn-sm">
+                                <i class="fas fa-users-cog me-1"></i>Quản Lý
+                            </a>
+                            <?php endif; ?>
+                            <a href="logout.php" class="btn btn-danger btn-sm">
+                                <i class="fas fa-sign-out-alt me-1"></i>Đăng Xuất
+                            </a>
+                        </div>
+                    </div>
                     <?php else: ?>
-                        <!-- Not Logged In -->
-                        <p class="text-lg font-semibold text-green-700 italic animate-pulse bg-green-50 px-4 py-2 rounded-xl shadow-sm">
-                            🌴 Chào mừng Đến Với Du Lịch Của Tỉnh Trà Vinh 🌴
-                        </p>
+                    <p class="mb-0 text-success fw-semibold fst-italic bg-success bg-opacity-10 px-3 py-2 rounded-3">
+                        🌴 Chào mừng Đến Với Du Lịch Của Tỉnh Trà Vinh 🌴
+                    </p>
                     <?php endif; ?>
                 </div>
 
-                <!-- Mobile: Hamburger Button -->
-                <button class="hamburger-btn md:hidden" id="hamburgerBtn" aria-label="Mở menu">
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
+                <!-- Mobile Menu Button -->
+                <button class="btn btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
-    
-    <!-- Mobile Menu Container -->
-    <div class="mobile-menu-container" id="mobileMenuContainer">
-        <div class="mobile-menu-header">
-            <div class="mobile-menu-logo">
-                <img src="hinhanh/logo.jpg" alt="Logo" style="height: 40px; border-radius: 8px;">
-                <span>Du Lịch Trà Vinh</span>
-            </div>
-            <button class="mobile-menu-close" aria-label="Đóng menu">
-                <i class="fas fa-times"></i>
-            </button>
+    <!-- Mobile Menu Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileMenu">
+        <div class="offcanvas-header bg-gradient-primary text-white">
+            <h5 class="offcanvas-title">
+                <i class="fas fa-compass me-2"></i>Du Lịch Trà Vinh
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
-        
-        <div class="mobile-menu-links">
-            <a href="index.php" class="mobile-menu-link active">
-                <i class="fas fa-home"></i>
-                <span>Trang Chủ</span>
-            </a>
-            <a href="dia-diem-du-lich-dynamic.php" class="mobile-menu-link">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Địa Điểm Du Lịch</span>
-            </a>
-            <a href="am-thuc.php" class="mobile-menu-link">
-                <i class="fas fa-utensils"></i>
-                <span>Ẩm Thực</span>
-            </a>
-            <a href="lien-he.php" class="mobile-menu-link">
-                <i class="fas fa-envelope"></i>
-                <span>Liên Hệ</span>
-            </a>
+        <div class="offcanvas-body">
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="index.php"><i class="fas fa-home me-2"></i>Trang Chủ</a>
+                <a class="nav-link" href="dia-diem-du-lich-dynamic.php"><i class="fas fa-map-marker-alt me-2"></i>Địa Điểm Du Lịch</a>
+                <a class="nav-link" href="am-thuc.php"><i class="fas fa-utensils me-2"></i>Ẩm Thực</a>
+                <a class="nav-link" href="lien-he.php"><i class="fas fa-envelope me-2"></i>Liên Hệ</a>
+                
+                <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager')): ?>
+                <hr>
+                <h6 class="text-muted px-3">Quản Lý</h6>
+                <a class="nav-link" href="quan-ly-users.php"><i class="fas fa-users-cog me-2"></i>Quản Lý Tài Khoản</a>
+                <a class="nav-link" href="quan-ly-booking.php"><i class="fas fa-calendar-check me-2"></i>Quản Lý Booking</a>
+                <a class="nav-link" href="quan-ly-dat-dich-vu.php"><i class="fas fa-concierge-bell me-2"></i>Quản Lý Dịch Vụ</a>
+                <a class="nav-link" href="quan-ly-xac-nhan-thanh-toan.php"><i class="fas fa-money-check-alt me-2"></i>Quản Lý Thanh Toán</a>
+                <a class="nav-link" href="quan-ly-lien-he.php"><i class="fas fa-envelope me-2"></i>Quản Lý Tin Nhắn</a>
+                <?php endif; ?>
+            </nav>
             
-            <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager')): ?>
-            <div class="mobile-menu-divider"></div>
-            <div class="mobile-menu-section-title">Quản Lý</div>
-            <a href="quan-ly-users.php" class="mobile-menu-link">
-                <i class="fas fa-users-cog"></i>
-                <span>Quản Lý Tài Khoản</span>
-            </a>
-            <a href="quan-ly-booking.php" class="mobile-menu-link">
-                <i class="fas fa-calendar-check"></i>
-                <span>Quản Lý Booking</span>
-            </a>
-            <?php endif; ?>
-        </div>
-        
-        <div class="mobile-menu-user">
+            <hr>
             <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
-            <div class="mobile-menu-user-info">
-                <div class="mobile-menu-avatar">
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-primary text-white rounded-circle p-2 me-2">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="mobile-menu-user-details">
-                    <div class="mobile-menu-user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></div>
-                    <div class="mobile-menu-user-role">
-                        <?php 
-                        $roleNames = ['admin' => 'Quản trị viên', 'manager' => 'Quản lý', 'user' => 'Người dùng'];
-                        echo $roleNames[$_SESSION['role']] ?? $_SESSION['role']; 
-                        ?>
-                    </div>
+                <div>
+                    <strong><?php echo htmlspecialchars($_SESSION['full_name']); ?></strong>
+                    <br><small class="text-muted"><?php echo $roleNames[$_SESSION['role']] ?? $_SESSION['role']; ?></small>
                 </div>
             </div>
-            <a href="logout.php" class="mobile-menu-logout">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Đăng Xuất</span>
+            <a href="logout.php" class="btn btn-danger w-100">
+                <i class="fas fa-sign-out-alt me-2"></i>Đăng Xuất
             </a>
             <?php else: ?>
-            <a href="dang-nhap.php" class="mobile-menu-logout" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Đăng Nhập</span>
+            <a href="dang-nhap.php" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập
             </a>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Navigation Menu Bar -->
-    <nav class="bg-gradient-to-r from-blue-600 to-green-600 shadow-md sticky top-[60px] md:top-[88px] z-40">
-        <div class="container mx-auto px-2 md:px-4">
-            <div class="flex items-center justify-center overflow-x-auto">
-                <ul class="flex items-center gap-1 py-2 md:py-3">
-                    <!-- Địa Điểm Du Lịch -->
-                    <li>
-                        <a href="dia-diem-du-lich-dynamic.php" 
-                           class="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 text-white font-semibold hover:bg-white/20 rounded-lg transition-all duration-300 text-sm md:text-base whitespace-nowrap">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Địa Điểm</span>
-                        </a>
-                    </li>
-
-                    <!-- Ẩm Thực -->
-                    <li>
-                        <a href="am-thuc.php" 
-                           class="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 text-white font-semibold hover:bg-white/20 rounded-lg transition-all duration-300 text-sm md:text-base whitespace-nowrap">
-                            <i class="fas fa-utensils"></i>
-                            <span>Ẩm Thực</span>
-                        </a>
-                    </li>
-
-                    <!-- Liên Hệ -->
-                    <li>
-                        <a href="lien-he.php" 
-                           class="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 text-white font-semibold hover:bg-white/20 rounded-lg transition-all duration-300 text-sm md:text-base whitespace-nowrap">
-                            <i class="fas fa-envelope"></i>
-                            <span>Liên Hệ</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <!-- Navigation Bar -->
+    <nav class="nav-main py-2 sticky-top" style="top: 60px; z-index: 1000;">
+        <div class="container">
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="dia-diem-du-lich-dynamic.php">
+                        <i class="fas fa-map-marker-alt me-1"></i>Địa Điểm
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="am-thuc.php">
+                        <i class="fas fa-utensils me-1"></i>Ẩm Thực
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="lien-he.php">
+                        <i class="fas fa-envelope me-1"></i>Liên Hệ
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Main Navigation Hero -->
-    <div class="main-content-wrapper">
-        <nav class="relative w-full min-h-[400px] md:h-[600px] overflow-hidden shadow-lg">
-            <!-- Background Images with Animation -->
-            <div class="absolute inset-0 bg-cover bg-center bg1"
-                style="background-image: url('hinhanh/bieu-trung-13-tinh-mien-tay.jpg');">
-            </div>
-            <div class="absolute inset-0 bg-cover bg-center bg2"
-                style="background-image: url('hinhanh/nhung-mon-an-ngon-dac-san-tra-vinh-nhat-dinh-phai-thu (1).jpg');">
-            </div>
-            <div class="absolute inset-0 bg-cover bg-center bg3"
-                style="background-image: url('hinhanh/kham-pha-8-dia-diem-du-lich-tra-vinh-doc-dao-an-tuong(1).jpg');">
-            </div>
 
-            <!-- Overlay -->
-            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <!-- Hero Section -->
+    <section class="hero-section position-relative">
+        <!-- Background Slider -->
+        <div class="bg-slider active" style="background-image: url('hinhanh/bieu-trung-13-tinh-mien-tay.jpg');"></div>
+        <div class="bg-slider" style="background-image: url('hinhanh/nhung-mon-an-ngon-dac-san-tra-vinh-nhat-dinh-phai-thu (1).jpg');"></div>
+        <div class="bg-slider" style="background-image: url('hinhanh/kham-pha-8-dia-diem-du-lich-tra-vinh-doc-dao-an-tuong(1).jpg');"></div>
+        
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Content -->
+        <div class="hero-content d-flex align-items-center justify-content-center min-vh-50 py-5">
+            <div class="container text-center text-white">
+                <!-- Title -->
+                <h1 class="hero-title mb-4 animate-fade-in">
+                    <span class="text-gradient-yellow">Du Lịch Trà Vinh</span>
+                </h1>
+                <p class="fs-4 mb-5 animate-fade-in-delay opacity-75">
+                    Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời
+                </p>
 
-            <!-- Navigation Content -->
-            <div class="absolute inset-0 flex items-center justify-center py-8">
-                <div class="text-center text-white max-w-6xl mx-auto px-4">
-                    <!-- Main Title -->
-                    <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-8 animate-fade-in">
-                        <span class="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                            Du Lịch Trà Vinh
-                        </span>
-                    </h1>
-
-                    <p class="text-base sm:text-lg md:text-2xl lg:text-3xl mb-6 md:mb-12 animate-fade-in-delay opacity-90 px-2">
-                        Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời
-                    </p>
-
-                    <!-- Navigation Cards -->
-                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mt-6 md:mt-12 px-2">
-
-                        <!-- Địa Điểm Du Lịch -->
-                        <a href="dia-diem-du-lich-dynamic.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl p-4 md:p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 shadow-xl">
-                                <div class="text-3xl md:text-6xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-map-marker-alt text-blue-400"></i>
-                                </div>
-                                <h3 class="text-sm md:text-2xl font-bold mb-1 md:mb-3">Địa Điểm</h3>
-                                <p class="text-xs md:text-lg opacity-90 mb-2 md:mb-4 hidden md:block">Khám phá <?php echo $attractionCount; ?> di tích lịch sử</p>
-                                <div class="flex items-center justify-center text-yellow-400 text-xs md:text-base">
-                                    <span class="mr-1 md:mr-2">Xem</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
+                <!-- Navigation Cards -->
+                <div class="row g-3 g-md-4 mt-4 justify-content-center">
+                    <!-- Địa Điểm -->
+                    <div class="col-6 col-lg-3">
+                        <a href="dia-diem-du-lich-dynamic.php" class="nav-card text-center">
+                            <div class="nav-card-icon text-info">
+                                <i class="fas fa-map-marker-alt"></i>
                             </div>
+                            <h5 class="fw-bold mb-2">Địa Điểm</h5>
+                            <p class="small opacity-75 d-none d-md-block">Khám phá <?php echo $attractionCount; ?> di tích lịch sử</p>
+                            <span class="text-warning small">
+                                Xem <i class="fas fa-arrow-right ms-1"></i>
+                            </span>
                         </a>
-
-                        <!-- Ẩm Thực -->
-                        <a href="am-thuc.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl p-4 md:p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 shadow-xl">
-                                <div class="text-3xl md:text-6xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-utensils text-orange-400"></i>
-                                </div>
-                                <h3 class="text-sm md:text-2xl font-bold mb-1 md:mb-3">Ẩm Thực</h3>
-                                <p class="text-xs md:text-lg opacity-90 mb-2 md:mb-4 hidden md:block">Đặc sản Khmer độc đáo</p>
-                                <div class="flex items-center justify-center text-yellow-400 text-xs md:text-base">
-                                    <span class="mr-1 md:mr-2">Xem</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Liên Hệ -->
-                        <a href="lien-he.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl p-4 md:p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 shadow-xl">
-                                <div class="text-3xl md:text-6xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-envelope text-green-400"></i>
-                                </div>
-                                <h3 class="text-sm md:text-2xl font-bold mb-1 md:mb-3">Liên Hệ</h3>
-                                <p class="text-xs md:text-lg opacity-90 mb-2 md:mb-4 hidden md:block">Tư vấn và hỗ trợ</p>
-                                <div class="flex items-center justify-center text-yellow-400 text-xs md:text-base">
-                                    <span class="mr-1 md:mr-2">Xem</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </a>
-
-                        <?php if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']): ?>
-                        <!-- Đăng Nhập (chỉ hiện khi chưa đăng nhập) -->
-                        <a href="dang-nhap.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl p-4 md:p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 shadow-xl">
-                                <div class="text-3xl md:text-6xl mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-sign-in-alt text-yellow-400"></i>
-                                </div>
-                                <h3 class="text-sm md:text-2xl font-bold mb-1 md:mb-3">Đăng Nhập</h3>
-                                <p class="text-xs md:text-lg opacity-90 mb-2 md:mb-4 hidden md:block">Truy cập tài khoản</p>
-                                <div class="flex items-center justify-center text-yellow-400 text-xs md:text-base">
-                                    <span class="mr-1 md:mr-2">Vào</span>
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
-                        </a>
-                        <?php endif; ?>
-
-                        <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager')): ?>
-                        <!-- Quản Lý Tài Khoản (chỉ hiện cho admin/manager) -->
-                        <a href="quan-ly-users.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl">
-                                <div class="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-users-cog text-purple-400"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-3">Quản Lý Tài Khoản</h3>
-                                <p class="text-lg opacity-90 mb-4">Quản lý users và phân quyền</p>
-                                <div class="flex items-center justify-center text-yellow-400 group-hover:text-yellow-300">
-                                    <span class="mr-2">Quản lý</span>
-                                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Quản Lý Booking -->
-                        <a href="quan-ly-booking.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl">
-                                <div class="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-calendar-check text-green-400"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-3">Quản Lý Booking</h3>
-                                <p class="text-lg opacity-90 mb-4">Quản lý đặt tour và lịch trình</p>
-                                <div class="flex items-center justify-center text-yellow-400 group-hover:text-yellow-300">
-                                    <span class="mr-2">Quản lý</span>
-                                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Quản Lý Dịch Vụ -->
-                        <a href="quan-ly-dich-vu.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl">
-                                <div class="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-concierge-bell text-purple-400"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-3">Quản Lý Dịch Vụ</h3>
-                                <p class="text-lg opacity-90 mb-4">Quản lý đặt dịch vụ du lịch</p>
-                                <div class="flex items-center justify-center text-yellow-400 group-hover:text-yellow-300">
-                                    <span class="mr-2">Quản lý</span>
-                                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Quản Lý Liên Hệ -->
-                        <a href="quan-ly-lien-he.php" class="nav-card group">
-                            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl">
-                                <div class="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                                    <i class="fas fa-envelope-open-text text-pink-400"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold mb-3">Quản Lý Liên Hệ</h3>
-                                <p class="text-lg opacity-90 mb-4">Quản lý tin nhắn và phản hồi</p>
-                                <div class="flex items-center justify-center text-yellow-400 group-hover:text-yellow-300">
-                                    <span class="mr-2">Quản lý</span>
-                                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
-                                </div>
-                            </div>
-                        </a>
-                        <?php endif; ?>
                     </div>
 
-                    <!-- Quick Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-8 md:mt-16 animate-fade-in-delay-2 px-2">
-                        <div class="text-center bg-white/10 rounded-lg p-3 md:p-4">
-                            <div class="text-xl md:text-4xl font-bold text-yellow-400 mb-1 md:mb-2"><?php echo $stats['temples']; ?></div>
-                            <div class="text-xs md:text-lg opacity-90">Chùa Khmer</div>
+                    <!-- Ẩm Thực -->
+                    <div class="col-6 col-lg-3">
+                        <a href="am-thuc.php" class="nav-card text-center">
+                            <div class="nav-card-icon text-warning">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Ẩm Thực</h5>
+                            <p class="small opacity-75 d-none d-md-block">Đặc sản Khmer độc đáo</p>
+                            <span class="text-warning small">
+                                Xem <i class="fas fa-arrow-right ms-1"></i>
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- Liên Hệ -->
+                    <div class="col-6 col-lg-3">
+                        <a href="lien-he.php" class="nav-card text-center">
+                            <div class="nav-card-icon text-success">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Liên Hệ</h5>
+                            <p class="small opacity-75 d-none d-md-block">Tư vấn và hỗ trợ</p>
+                            <span class="text-warning small">
+                                Xem <i class="fas fa-arrow-right ms-1"></i>
+                            </span>
+                        </a>
+                    </div>
+
+                    <?php if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']): ?>
+                    <!-- Đăng Nhập -->
+                    <div class="col-6 col-lg-3">
+                        <a href="dang-nhap.php" class="nav-card text-center">
+                            <div class="nav-card-icon text-warning">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Đăng Nhập</h5>
+                            <p class="small opacity-75 d-none d-md-block">Truy cập tài khoản</p>
+                            <span class="text-warning small">
+                                Vào <i class="fas fa-arrow-right ms-1"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'manager')): ?>
+                    <!-- Quản Lý -->
+                    <div class="col-6 col-lg-3">
+                        <a href="quan-ly-users.php" class="nav-card text-center">
+                            <div class="nav-card-icon" style="color: #a855f7;">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Quản Lý</h5>
+                            <p class="small opacity-75 d-none d-md-block">Quản lý hệ thống</p>
+                            <span class="text-warning small">
+                                Vào <i class="fas fa-arrow-right ms-1"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Stats -->
+                <div class="row g-3 mt-5 animate-fade-in-delay-2">
+                    <div class="col-6 col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number"><?php echo $stats['temples']; ?></div>
+                            <div class="small opacity-75">Chùa Khmer</div>
                         </div>
-                        <div class="text-center bg-white/10 rounded-lg p-3 md:p-4">
-                            <div class="text-xl md:text-4xl font-bold text-yellow-400 mb-1 md:mb-2"><?php echo $stats['visitors']; ?></div>
-                            <div class="text-xs md:text-lg opacity-90">Lượt Khách/Năm</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number"><?php echo $stats['visitors']; ?></div>
+                            <div class="small opacity-75">Lượt Khách/Năm</div>
                         </div>
-                        <div class="text-center bg-white/10 rounded-lg p-3 md:p-4">
-                            <div class="text-xl md:text-4xl font-bold text-yellow-400 mb-1 md:mb-2"><?php echo $stats['heritage_sites']; ?></div>
-                            <div class="text-xs md:text-lg opacity-90">Di Tích Lịch Sử</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number"><?php echo $stats['heritage_sites']; ?></div>
+                            <div class="small opacity-75">Di Tích Lịch Sử</div>
                         </div>
-                        <div class="text-center bg-white/10 rounded-lg p-3 md:p-4">
-                            <div class="text-xl md:text-4xl font-bold text-yellow-400 mb-1 md:mb-2"><?php echo $stats['ethnic_groups']; ?></div>
-                            <div class="text-xs md:text-lg opacity-90">Dân Tộc</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-box">
+                            <div class="stat-number"><?php echo $stats['ethnic_groups']; ?></div>
+                            <div class="small opacity-75">Dân Tộc</div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Scroll Indicator -->
-            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-                <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-                    <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
-                </div>
+        <!-- Scroll Indicator -->
+        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4">
+            <div class="scroll-indicator">
+                <div class="scroll-indicator-dot"></div>
             </div>
-        </nav>
-    </div>
+        </div>
+    </section>
 
     <!-- Featured Attractions Section -->
-    <section class="py-10 md:py-20 bg-gradient-to-br from-blue-50 to-green-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-8 md:mb-16">
-                <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-2 md:mb-4">Điểm Đến Nổi Bật</h2>
-                <p class="text-sm md:text-xl text-gray-600 max-w-3xl mx-auto">
-                    Khám phá những địa điểm du lịch đặc sắc nhất của Trà Vinh
-                </p>
+    <section class="py-5 bg-gradient-light-blue">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-dark mb-3">Điểm Đến Nổi Bật</h2>
+                <p class="text-muted fs-5">Khám phá những địa điểm du lịch đặc sắc nhất của Trà Vinh</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div class="row g-4">
                 <?php foreach ($attractions as $index => $attraction): ?>
-                <div class="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group">
-                    <div class="relative h-48 md:h-64 overflow-hidden">
-                        <img src="<?php echo htmlspecialchars($attraction['image_url'] ?? 'hinhanh/placeholder.jpg'); ?>" 
-                             alt="<?php echo htmlspecialchars($attraction['name']); ?>"
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                             onerror="this.src='hinhanh/placeholder.jpg'">
-                        <div class="absolute top-3 left-3 md:top-4 md:left-4">
-                            <span class="bg-<?php echo $index === 0 ? 'red' : ($index === 1 ? 'orange' : 'green'); ?>-500 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card attraction-card shadow h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img src="<?php echo htmlspecialchars($attraction['image_url'] ?? 'hinhanh/placeholder.jpg'); ?>" 
+                                 alt="<?php echo htmlspecialchars($attraction['name']); ?>"
+                                 class="card-img-top attraction-card-img"
+                                 onerror="this.src='hinhanh/placeholder.jpg'">
+                            <span class="position-absolute top-0 start-0 m-3 badge bg-<?php echo $index === 0 ? 'danger' : ($index === 1 ? 'warning' : 'success'); ?>">
                                 <?php echo htmlspecialchars($attraction['category'] ?? 'Địa điểm du lịch'); ?>
                             </span>
                         </div>
-                    </div>
-                    <div class="p-4 md:p-6">
-                        <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-2 md:mb-3">
-                            <?php echo htmlspecialchars($attraction['name']); ?>
-                        </h3>
-                        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-2">
-                            <?php echo htmlspecialchars(substr($attraction['description'] ?? '', 0, 100)) . '...'; ?>
-                        </p>
-                        <a href="chi-tiet-dia-diem.php?id=<?php echo urlencode($attraction['attraction_id']); ?>"
-                           class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-sm md:text-base">
-                            Xem chi tiết <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold"><?php echo htmlspecialchars($attraction['name']); ?></h5>
+                            <p class="card-text text-muted">
+                                <?php echo htmlspecialchars(substr($attraction['description'] ?? '', 0, 100)) . '...'; ?>
+                            </p>
+                            <a href="chi-tiet-dia-diem.php?id=<?php echo urlencode($attraction['attraction_id']); ?>" 
+                               class="btn btn-link text-primary fw-semibold p-0">
+                                Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
             </div>
 
-            <div class="text-center mt-12">
-                <a href="dia-diem-du-lich-dynamic.php"
-                   class="bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-blue-700 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                    <i class="fas fa-compass mr-2"></i>Khám Phá Tất Cả Địa Điểm
+            <div class="text-center mt-5">
+                <a href="dia-diem-du-lich-dynamic.php" class="btn btn-gradient-primary btn-lg">
+                    <i class="fas fa-compass me-2"></i>Khám Phá Tất Cả Địa Điểm
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Quick Navigation Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Dịch Vụ Du Lịch</h2>
-                <p class="text-xl text-gray-600">Chúng tôi cung cấp đầy đủ các dịch vụ cho chuyến du lịch của bạn</p>
+
+    <!-- Services Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-dark mb-3">Dịch Vụ Du Lịch</h2>
+                <p class="text-muted fs-5">Chúng tôi cung cấp đầy đủ các dịch vụ cho chuyến du lịch của bạn</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="row g-4">
                 <!-- Lập Kế Hoạch Tour -->
-                <div class="text-center group cursor-pointer service-card" onclick="openServiceModal('tour-planning')">
-                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-all duration-300 group-hover:scale-110">
-                        <i class="fas fa-route text-3xl text-blue-600 group-hover:animate-pulse"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">Lập Kế Hoạch Tour</h3>
-                    <p class="text-gray-600 group-hover:text-gray-700">Tư vấn và thiết kế hành trình phù hợp với nhu cầu</p>
-                    <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-blue-600 font-semibold">Nhấp để xem chi tiết →</span>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="text-center p-4 card-hover rounded-3" data-bs-toggle="modal" data-bs-target="#tourModal" style="cursor: pointer;">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-route fs-2 text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">Lập Kế Hoạch Tour</h5>
+                        <p class="text-muted small">Tư vấn và thiết kế hành trình phù hợp với nhu cầu</p>
                     </div>
                 </div>
 
                 <!-- Đặt Phòng Khách Sạn -->
-                <div class="text-center group cursor-pointer service-card" onclick="openServiceModal('hotel-booking')">
-                    <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-all duration-300 group-hover:scale-110">
-                        <i class="fas fa-hotel text-3xl text-green-600 group-hover:animate-pulse"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">Đặt Phòng Khách Sạn</h3>
-                    <p class="text-gray-600 group-hover:text-gray-700">Hỗ trợ đặt phòng tại các khách sạn uy tín</p>
-                    <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-green-600 font-semibold">Nhấp để xem chi tiết →</span>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="text-center p-4 card-hover rounded-3" data-bs-toggle="modal" data-bs-target="#hotelModal" style="cursor: pointer;">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-hotel fs-2 text-success"></i>
+                        </div>
+                        <h5 class="fw-bold">Đặt Phòng Khách Sạn</h5>
+                        <p class="text-muted small">Hỗ trợ đặt phòng tại các khách sạn uy tín</p>
                     </div>
                 </div>
 
                 <!-- Thuê Xe Du Lịch -->
-                <div class="text-center group cursor-pointer service-card" onclick="openServiceModal('car-rental')">
-                    <div class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 transition-all duration-300 group-hover:scale-110">
-                        <i class="fas fa-car text-3xl text-orange-600 group-hover:animate-pulse"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">Thuê Xe Du Lịch</h3>
-                    <p class="text-gray-600 group-hover:text-gray-700">Dịch vụ thuê xe với tài xế kinh nghiệm</p>
-                    <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-orange-600 font-semibold">Nhấp để xem chi tiết →</span>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="text-center p-4 card-hover rounded-3" data-bs-toggle="modal" data-bs-target="#carModal" style="cursor: pointer;">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-car fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold">Thuê Xe Du Lịch</h5>
+                        <p class="text-muted small">Dịch vụ thuê xe với tài xế kinh nghiệm</p>
                     </div>
                 </div>
 
                 <!-- Hỗ Trợ 24/7 -->
-                <div class="text-center group cursor-pointer service-card" onclick="openServiceModal('support')">
-                    <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-all duration-300 group-hover:scale-110">
-                        <i class="fas fa-headset text-3xl text-purple-600 group-hover:animate-pulse"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-purple-600 transition-colors">Hỗ Trợ 24/7</h3>
-                    <p class="text-gray-600 group-hover:text-gray-700">Đội ngũ hỗ trợ khách hàng luôn sẵn sàng</p>
-                    <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-purple-600 font-semibold">Nhấp để xem chi tiết →</span>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="text-center p-4 card-hover rounded-3" data-bs-toggle="modal" data-bs-target="#supportModal" style="cursor: pointer;">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-headset fs-2 text-info"></i>
+                        </div>
+                        <h5 class="fw-bold">Hỗ Trợ 24/7</h5>
+                        <p class="text-muted small">Đội ngũ hỗ trợ khách hàng luôn sẵn sàng</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Service Details Modal Container -->
-            <div id="serviceModalContainer" class="hidden"></div>
+    <!-- Why Choose Us Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Tại Sao Chọn Chúng Tôi?</h2>
+                <p class="text-muted fs-5">Những lý do khiến khách hàng tin tưởng và lựa chọn dịch vụ của chúng tôi</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Chuyên Nghiệp -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4" style="cursor: pointer; transition: all 0.3s ease;" data-bs-toggle="modal" data-bs-target="#professionalModal" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-award fs-2 text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Chuyên Nghiệp</h5>
+                        <p class="text-muted small mb-0">Đội ngũ có kinh nghiệm lâu năm trong ngành du lịch</p>
+                        <div class="mt-3">
+                            <small class="text-primary"><i class="fas fa-hand-pointer me-1"></i>Click để xem chi tiết</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Giá Tốt Nhất -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4" style="cursor: pointer; transition: all 0.3s ease;" data-bs-toggle="modal" data-bs-target="#priceModal" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-dollar-sign fs-2 text-success"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Giá Tốt Nhất</h5>
+                        <p class="text-muted small mb-0">Cam kết giá cạnh tranh nhất thị trường</p>
+                        <div class="mt-3">
+                            <small class="text-success"><i class="fas fa-hand-pointer me-1"></i>Click để xem chi tiết</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- An Toàn -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4" style="cursor: pointer; transition: all 0.3s ease;" data-bs-toggle="modal" data-bs-target="#safetyModal" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-shield-alt fs-2 text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">An Toàn</h5>
+                        <p class="text-muted small mb-0">Bảo hiểm và an toàn tuyệt đối cho khách hàng</p>
+                        <div class="mt-3">
+                            <small class="text-warning"><i class="fas fa-hand-pointer me-1"></i>Click để xem chi tiết</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tận Tâm -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4" style="cursor: pointer; transition: all 0.3s ease;" data-bs-toggle="modal" data-bs-target="#dedicatedModal" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-heart fs-2 text-info"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Tận Tâm</h5>
+                        <p class="text-muted small mb-0">Phục vụ với trái tim và tâm huyết</p>
+                        <div class="mt-3">
+                            <small class="text-info"><i class="fas fa-hand-pointer me-1"></i>Click để xem chi tiết</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Du Lịch Trà Vinh</h3>
-                    <p class="text-gray-300 mb-4">Khám phá vẻ đẹp văn hóa Khmer và thiên nhiên tuyệt vời của Trà Vinh.</p>
-                    <div class="flex space-x-3">
-                        <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer" 
-                           class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                           class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                           class="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50">
-                            <i class="fab fa-youtube"></i>
-                        </a>
+    <?php include 'components/footer.php'; ?>
+
+    <!-- Service Booking Modals -->
+    <?php include 'components/service-modals.php'; ?>
+
+    <!-- Why Choose Us Detail Modals -->
+    <!-- Modal Chuyên Nghiệp -->
+    <div class="modal fade" id="professionalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-award me-2"></i>Chuyên Nghiệp</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-users fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Đội Ngũ Giàu Kinh Nghiệm</h6>
+                                    <p class="text-muted small mb-0">Hơn 10 năm hoạt động trong lĩnh vực du lịch với đội ngũ hướng dẫn viên chuyên nghiệp, am hiểu văn hóa địa phương.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-certificate fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Chứng Nhận Uy Tín</h6>
+                                    <p class="text-muted small mb-0">Được cấp phép và công nhận bởi Sở Du Lịch, đảm bảo chất lượng dịch vụ theo tiêu chuẩn quốc gia.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-graduation-cap fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Đào Tạo Chuyên Sâu</h6>
+                                    <p class="text-muted small mb-0">Nhân viên được đào tạo bài bản về kỹ năng phục vụ, kiến thức du lịch và ngoại ngữ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-star fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Đánh Giá Cao</h6>
+                                    <p class="text-muted small mb-0">Hơn 5000+ khách hàng hài lòng với đánh giá trung bình 4.8/5 sao trên các nền tảng.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold mb-4">Liên Kết Nhanh</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="index.php" class="hover:text-white transition-colors">Trang Chủ</a></li>
-                        <li><a href="dia-diem-du-lich-dynamic.php" class="hover:text-white transition-colors">Địa Điểm Du Lịch</a></li>
-                        <li><a href="am-thuc.php" class="hover:text-white transition-colors">Ẩm Thực</a></li>
-                        <li><a href="lien-he.php" class="hover:text-white transition-colors">Liên Hệ</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold mb-4">Liên Hệ</h4>
-                    <div class="space-y-2 text-gray-300">
-                        <p><i class="fas fa-map-marker-alt mr-2"></i>Trường ĐH Trà Vinh</p>
-                        <p><i class="fas fa-phone mr-2"></i>0294.3855.246</p>
-                        <p><i class="fas fa-envelope mr-2"></i>info@tvu.edu.vn</p>
+                    <div class="alert alert-primary mt-4 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Cam kết:</strong> Chúng tôi không ngừng nâng cao chất lượng dịch vụ để mang đến trải nghiệm tốt nhất cho khách hàng.
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold mb-4">Giờ Làm Việc</h4>
-                    <div class="space-y-2 text-gray-300 text-sm">
-                        <p>Thứ 2 - Thứ 6: 7:30 - 17:00</p>
-                        <p>Thứ 7: 7:30 - 11:30</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-                <p>&copy; <?php echo $currentYear; ?> Du Lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
-                <div class="flex justify-center gap-4 mt-4">
-                    <a href="https://www.facebook.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50" title="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="https://www.instagram.com/travinh.tourism" target="_blank" rel="noopener noreferrer"
-                        class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 hover:from-purple-500 hover:via-pink-400 hover:to-orange-300 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50" title="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@travinhtourism" target="_blank" rel="noopener noreferrer"
-                        class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50" title="YouTube">
-                        <i class="fab fa-youtube"></i>
-                    </a>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- Scripts -->
-    <script src="js/cross-page-navigation.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/datetime.js"></script>
-    <script src="js/index-effects.js"></script>
-    <script src="js/service-modal.js"></script>
-    <script src="js/booking-system-php.js"></script>
+    <!-- Modal Giá Tốt Nhất -->
+    <div class="modal fade" id="priceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="fas fa-dollar-sign me-2"></i>Giá Tốt Nhất</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-tags fs-4 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Giá Cạnh Tranh</h6>
+                                    <p class="text-muted small mb-0">So sánh và đảm bảo mức giá tốt nhất thị trường cho cùng chất lượng dịch vụ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-percent fs-4 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Ưu Đãi Thường Xuyên</h6>
+                                    <p class="text-muted small mb-0">Chương trình khuyến mãi hấp dẫn theo mùa, giảm giá cho đoàn và khách hàng thân thiết.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-file-invoice-dollar fs-4 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Minh Bạch Chi Phí</h6>
+                                    <p class="text-muted small mb-0">Báo giá rõ ràng, không phát sinh chi phí ẩn, khách hàng hoàn toàn yên tâm.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-gift fs-4 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Quà Tặng Hấp Dẫn</h6>
+                                    <p class="text-muted small mb-0">Tặng kèm bảo hiểm du lịch, nón lá, nước suối và nhiều quà tặng giá trị khác.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-success mt-4 mb-0">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Cam kết:</strong> Nếu tìm được giá tốt hơn với cùng chất lượng, chúng tôi sẽ hoàn lại 110% chênh lệch.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal An Toàn -->
+    <div class="modal fade" id="safetyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title"><i class="fas fa-shield-alt me-2"></i>An Toàn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-shield-virus fs-4 text-warning"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Bảo Hiểm Toàn Diện</h6>
+                                    <p class="text-muted small mb-0">Mua bảo hiểm du lịch cho 100% khách hàng, bảo vệ tối đa quyền lợi trong suốt hành trình.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-bus fs-4 text-warning"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Phương Tiện Đạt Chuẩn</h6>
+                                    <p class="text-muted small mb-0">Xe du lịch đời mới, được kiểm định định kỳ, tài xế có bằng lái và kinh nghiệm lâu năm.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-first-aid fs-4 text-warning"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Y Tế Sẵn Sàng</h6>
+                                    <p class="text-muted small mb-0">Trang bị túi y tế cơ bản, hướng dẫn viên được đào tạo sơ cứu cấp cứu ban đầu.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-phone-volume fs-4 text-warning"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Hỗ Trợ Khẩn Cấp 24/7</h6>
+                                    <p class="text-muted small mb-0">Đường dây nóng luôn sẵn sàng hỗ trợ mọi tình huống phát sinh trong chuyến đi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning mt-4 mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Ưu tiên hàng đầu:</strong> An toàn của khách hàng luôn được đặt lên hàng đầu trong mọi hoạt động.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tận Tâm -->
+    <div class="modal fade" id="dedicatedModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title"><i class="fas fa-heart me-2"></i>Tận Tâm</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-headset fs-4 text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Tư Vấn Nhiệt Tình</h6>
+                                    <p class="text-muted small mb-0">Lắng nghe và tư vấn chi tiết để thiết kế hành trình phù hợp nhất với nhu cầu của bạn.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-smile-beam fs-4 text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Phục Vụ Chu Đáo</h6>
+                                    <p class="text-muted small mb-0">Chăm sóc khách hàng từ những chi tiết nhỏ nhất, mang đến sự hài lòng tối đa.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-comments fs-4 text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Lắng Nghe Phản Hồi</h6>
+                                    <p class="text-muted small mb-0">Luôn tiếp nhận và cải thiện dịch vụ dựa trên ý kiến đóng góp của khách hàng.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="fas fa-hands-helping fs-4 text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Hỗ Trợ Sau Tour</h6>
+                                    <p class="text-muted small mb-0">Tiếp tục chăm sóc và hỗ trợ khách hàng ngay cả sau khi kết thúc chuyến đi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-4 mb-0">
+                        <i class="fas fa-heart me-2"></i>
+                        <strong>Phương châm:</strong> "Khách hàng hài lòng là thành công của chúng tôi" - Chúng tôi phục vụ bằng cả trái tim.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Update current date time
+        // Background Slider
+        const slides = document.querySelectorAll('.bg-slider');
+        let currentSlide = 0;
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        setInterval(nextSlide, 5000);
+
+        // Update DateTime
         function updateDateTime() {
             const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            const dateTimeString = now.toLocaleDateString('vi-VN', options);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
             const dateTimeElement = document.getElementById('currentDateTime');
             if (dateTimeElement) {
-                dateTimeElement.textContent = dateTimeString;
+                dateTimeElement.textContent = now.toLocaleDateString('vi-VN', options);
             }
         }
+        
+        setInterval(updateDateTime, 60000);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function () {
-            updateDateTime();
-            setInterval(updateDateTime, 60000); // Update every minute
+        // Submit booking function
+        async function submitBooking(formId) {
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
             
-            // Initialize booking system
-            if (typeof tourBookingPHP !== 'undefined') {
-                console.log('✅ Tour booking system loaded');
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+            const data = {
+                service_id: parseInt(formData.get('service_id')),
+                customer_name: formData.get('customer_name'),
+                customer_phone: formData.get('customer_phone'),
+                customer_email: formData.get('customer_email') || '',
+                service_date: formData.get('service_date') || null,
+                number_of_people: parseInt(formData.get('number_of_people')) || 1,
+                number_of_days: parseInt(formData.get('number_of_days')) || 1,
+                special_requests: formData.get('special_requests') || '',
+                total_price: 0
+            };
+            
+            try {
+                const response = await fetch('api/service-bookings.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    form.reset();
+                    bootstrap.Modal.getInstance(form.closest('.modal')).hide();
+                } else {
+                    alert('❌ ' + result.message);
                 }
-            });
-        });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        }
     </script>
-    
-    <!-- Mobile Menu & Responsive JS -->
-    <script src="js/mobile-menu.js"></script>
 </body>
-
 </html>

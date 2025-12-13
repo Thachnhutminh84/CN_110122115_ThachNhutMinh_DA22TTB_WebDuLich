@@ -590,10 +590,10 @@ class ServiceModalManager {
                 // Reset form
                 event.target.reset();
 
-                // Ẩn form đặt dịch vụ và hiện lại form lập kế hoạch
+                // Hiển thị modal thanh toán
                 setTimeout(() => {
-                    this.hideBookingForm();
-                }, 1500);
+                    this.showPaymentModal(result.data.booking_code, serviceInfo);
+                }, 1000);
             } else {
                 this.showNotification('❌ ' + result.message, 'error');
             }
@@ -603,6 +603,132 @@ class ServiceModalManager {
         }
 
         return false;
+    }
+
+    // Hiển thị modal thanh toán
+    showPaymentModal(bookingCode, serviceInfo) {
+        const bookingSection = document.getElementById('bookingFormSection');
+        if (bookingSection) {
+            bookingSection.classList.add('hidden');
+        }
+
+        // Tạo modal thanh toán
+        const paymentHTML = `
+            <div id="paymentSection" class="border-t-2 border-green-200 pt-8 mt-8 bg-gradient-to-br from-green-50 to-white p-6 rounded-lg">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                        <i class="fas fa-check-circle text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Đặt Dịch Vụ Thành Công!</h3>
+                    <p class="text-gray-600">Mã đặt dịch vụ: <span class="font-bold text-green-600">${bookingCode}</span></p>
+                    <p class="text-sm text-gray-500 mt-2">${serviceInfo}</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                    <h4 class="font-bold text-lg text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-credit-card text-blue-500 mr-2"></i>
+                        Chọn Phương Thức Thanh Toán
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button onclick="serviceModalManager.processPayment('${bookingCode}', 'vnpay')" 
+                                class="payment-option-btn border-2 border-blue-200 hover:border-blue-500 bg-white hover:bg-blue-50 p-4 rounded-lg transition-all group">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                    <i class="fas fa-credit-card text-blue-600 text-2xl"></i>
+                                </div>
+                                <span class="font-semibold text-gray-800">VNPay</span>
+                                <span class="text-xs text-gray-500">Thanh toán qua VNPay</span>
+                            </div>
+                        </button>
+
+                        <button onclick="serviceModalManager.processPayment('${bookingCode}', 'bank')" 
+                                class="payment-option-btn border-2 border-green-200 hover:border-green-500 bg-white hover:bg-green-50 p-4 rounded-lg transition-all group">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-university text-green-600 text-2xl"></i>
+                                </div>
+                                <span class="font-semibold text-gray-800">Chuyển Khoản</span>
+                                <span class="text-xs text-gray-500">Chuyển khoản ngân hàng</span>
+                            </div>
+                        </button>
+
+                        <button onclick="serviceModalManager.processPayment('${bookingCode}', 'momo')" 
+                                class="payment-option-btn border-2 border-pink-200 hover:border-pink-500 bg-white hover:bg-pink-50 p-4 rounded-lg transition-all group">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center group-hover:bg-pink-200 transition-colors">
+                                    <i class="fas fa-wallet text-pink-600 text-2xl"></i>
+                                </div>
+                                <span class="font-semibold text-gray-800">MoMo</span>
+                                <span class="text-xs text-gray-500">Ví điện tử MoMo</span>
+                            </div>
+                        </button>
+
+                        <button onclick="serviceModalManager.skipPayment()" 
+                                class="payment-option-btn border-2 border-gray-200 hover:border-gray-400 bg-white hover:bg-gray-50 p-4 rounded-lg transition-all group">
+                            <div class="flex flex-col items-center space-y-2">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                                    <i class="fas fa-money-bill-wave text-gray-600 text-2xl"></i>
+                                </div>
+                                <span class="font-semibold text-gray-800">Thanh toán sau</span>
+                                <span class="text-xs text-gray-500">Thanh toán khi sử dụng</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                        <div class="text-sm text-gray-700">
+                            <p class="font-semibold mb-1">Lưu ý:</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-600">
+                                <li>Chúng tôi sẽ liên hệ với bạn trong vòng 24h để xác nhận chi tiết</li>
+                                <li>Bạn có thể thanh toán ngay hoặc thanh toán sau khi sử dụng dịch vụ</li>
+                                <li>Mã đặt dịch vụ đã được gửi qua SMS/Email (nếu có)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Thêm vào modal
+        const planningSection = document.getElementById('planningFormSection');
+        if (planningSection) {
+            planningSection.insertAdjacentHTML('beforebegin', paymentHTML);
+            planningSection.classList.add('hidden');
+
+            // Scroll đến phần thanh toán
+            setTimeout(() => {
+                document.getElementById('paymentSection').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 100);
+        }
+    }
+
+    // Xử lý thanh toán
+    processPayment(bookingCode, method) {
+        if (method === 'vnpay') {
+            // Chuyển đến trang thanh toán VNPay
+            window.location.href = `payment-service-method.php?booking_id=${bookingCode}&method=vnpay`;
+        } else if (method === 'bank') {
+            // Chuyển đến trang chi tiết chuyển khoản
+            window.location.href = `chi-tiet-chuyen-khoan.php?code=${bookingCode}`;
+        } else if (method === 'momo') {
+            // Chuyển đến trang thanh toán MoMo
+            window.location.href = `payment-service-method.php?booking_id=${bookingCode}&method=momo`;
+        }
+    }
+
+    // Bỏ qua thanh toán
+    skipPayment() {
+        this.showNotification('✅ Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm nhất.', 'success');
+        setTimeout(() => {
+            this.closeModal();
+        }, 2000);
     }
 
     // Gửi form đặt dịch vụ
@@ -651,10 +777,10 @@ class ServiceModalManager {
                 // Hiển thị thông báo thành công
                 this.showNotification('✅ ' + result.message, 'success');
 
-                // Đóng modal sau 1.5 giây
+                // Hiển thị modal thanh toán
                 setTimeout(() => {
-                    this.closeModal();
-                }, 1500);
+                    this.showPaymentModal(result.data.booking_code, 'Dịch vụ đã đặt');
+                }, 1000);
             } else {
                 this.showNotification('❌ ' + result.message, 'error');
             }

@@ -173,6 +173,8 @@ $statusNames = [
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .table-header h2 {
@@ -183,6 +185,7 @@ $statusNames = [
         .filter-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
@@ -202,37 +205,169 @@ $statusNames = [
             color: #667eea;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .bookings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
-        th {
+        .booking-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .booking-row:hover {
             background: #f9fafb;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #4b5563;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .booking-row:nth-child(even) {
+            background: #fafbfc;
+        }
+
+        .booking-row:nth-child(even):hover {
+            background: #f3f4f6;
+        }
+
+        .booking-row-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .booking-row-id {
+            flex-shrink: 0;
+        }
+
+        .id-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85em;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            padding: 4px;
+        }
+
+        .booking-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .booking-row-customer {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .booking-row-customer i {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .booking-row-contact {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #6b7280;
+            font-size: 0.85em;
+        }
+
+        .contact-item i {
+            color: #3b82f6;
+            width: 14px;
+        }
+
+        .booking-row-attraction {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
             font-size: 0.9em;
+        }
+
+        .booking-row-attraction i {
+            color: #10b981;
+            font-size: 1em;
+        }
+
+        .location-text {
+            color: #9ca3af;
+            font-size: 0.85em;
+            margin-left: 4px;
+        }
+
+        .booking-row-middle {
+            display: flex;
+            gap: 16px;
+            margin: 0 20px;
+            flex-shrink: 0;
+        }
+
+        .booking-row-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 0.75em;
+            color: #9ca3af;
             text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        tr:hover {
-            background: #f9fafb;
+        .detail-value {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .status-badge {
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85em;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
             display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .booking-row-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .customer-info {
@@ -262,52 +397,70 @@ $statusNames = [
         }
 
         .action-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 10px 12px;
+            border-radius: 8px;
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 1em;
             font-weight: 600;
             transition: all 0.3s;
-            display: inline-block;
-            margin-right: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border: none;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .action-btn i {
+            font-size: 1.1em;
         }
 
         .btn-confirm {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
 
         .btn-confirm:hover {
-            background: #2563eb;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         }
 
         .btn-cancel {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
         .btn-cancel:hover {
-            background: #dc2626;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
 
         .btn-complete {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
 
         .btn-complete:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
 
         .btn-delete {
-            background: #6b7280;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
         .btn-delete:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
 
         .no-data {
@@ -322,13 +475,92 @@ $statusNames = [
             margin-bottom: 20px;
         }
 
+        @media (max-width: 1024px) {
+            .booking-row {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .booking-row-left {
+                width: 100%;
+                order: 1;
+            }
+
+            .booking-row-middle {
+                order: 2;
+                margin: 0;
+                width: 100%;
+            }
+
+            .booking-row-actions {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
-            table {
-                font-size: 0.9em;
+
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-buttons {
+                width: 100%;
+            }
+
+            .booking-row {
+                padding: 12px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .booking-row-left {
+                width: 100%;
+                gap: 12px;
+            }
+
+            .id-badge {
+                width: 45px;
+                height: 45px;
+                font-size: 0.8em;
+            }
+
+            .booking-row-customer {
+                font-size: 0.95em;
+            }
+
+            .booking-row-contact {
+                font-size: 0.8em;
+            }
+
+            .booking-row-attraction {
+                font-size: 0.85em;
+            }
+
+            .booking-row-middle {
+                width: 100%;
+                margin: 8px 0;
+                gap: 12px;
+            }
+
+            .booking-row-actions {
+                width: 100%;
+                gap: 6px;
+            }
+
+            .action-btn {
+                width: 36px;
+                height: 36px;
+                padding: 8px;
+            }
+
+            .action-btn i {
+                font-size: 1em;
             }
         }
     </style>
@@ -341,9 +573,23 @@ $statusNames = [
                 <i class="fas fa-calendar-check"></i>
                 Quản Lý Đặt Tour
             </h1>
-            <a href="index.php" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Quay Lại
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="quan-ly-users.php" class="back-btn">
+                    <i class="fas fa-users-cog"></i> Quản Lý Tài Khoản
+                </a>
+                <a href="quan-ly-dat-dich-vu.php" class="back-btn">
+                    <i class="fas fa-concierge-bell"></i> Quản Lý Dịch Vụ
+                </a>
+                <a href="quan-ly-xac-nhan-thanh-toan.php" class="back-btn">
+                    <i class="fas fa-money-check-alt"></i> Quản Lý Thanh Toán
+                </a>
+                <a href="quan-ly-lien-he.php" class="back-btn">
+                    <i class="fas fa-envelope"></i> Quản Lý Tin Nhắn
+                </a>
+                <a href="index.php" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Quay Lại
+                </a>
+            </div>
         </div>
     </div>
 
@@ -405,70 +651,85 @@ $statusNames = [
             </div>
 
             <?php if (!empty($bookings)): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mã đặt</th>
-                        <th>Khách hàng</th>
-                        <th>Địa điểm</th>
-                        <th>Ngày tham quan</th>
-                        <th>Số người</th>
-                        <th>Tổng tiền</th>
-                        <th>Trạng thái</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($bookings as $b): ?>
-                    <tr data-status="<?php echo $b['status']; ?>">
-                        <td><strong><?php echo htmlspecialchars($b['booking_id']); ?></strong></td>
-                        <td>
-                            <div class="customer-info"><?php echo htmlspecialchars($b['customer_name']); ?></div>
-                            <div class="customer-contact">
-                                <i class="fas fa-phone"></i> <?php echo htmlspecialchars($b['customer_phone']); ?>
+            <div class="bookings-list">
+                <?php foreach ($bookings as $b): ?>
+                <div class="booking-row" data-status="<?php echo $b['status']; ?>">
+                    <div class="booking-row-left">
+                        <div class="booking-row-id">
+                            <span class="id-badge"><?php echo htmlspecialchars($b['booking_id']); ?></span>
+                        </div>
+                        <div class="booking-row-info">
+                            <div class="booking-row-customer">
+                                <i class="fas fa-user"></i>
+                                <strong><?php echo htmlspecialchars($b['customer_name']); ?></strong>
                             </div>
-                            <?php if (!empty($b['customer_email'])): ?>
-                            <div class="customer-contact">
-                                <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($b['customer_email']); ?>
+                            <div class="booking-row-contact">
+                                <span class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <?php echo htmlspecialchars($b['customer_phone']); ?>
+                                </span>
+                                <?php if (!empty($b['customer_email'])): ?>
+                                <span class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <?php echo htmlspecialchars($b['customer_email']); ?>
+                                </span>
+                                <?php endif; ?>
                             </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <div class="attraction-name"><?php echo htmlspecialchars($b['attraction_name'] ?? 'N/A'); ?></div>
-                            <div class="attraction-location"><?php echo htmlspecialchars($b['attraction_location'] ?? ''); ?></div>
-                        </td>
-                        <td class="booking-date">
-                            <i class="fas fa-calendar"></i>
-                            <?php echo date('d/m/Y', strtotime($b['booking_date'])); ?>
-                        </td>
-                        <td><strong><?php echo $b['number_of_people']; ?></strong> người</td>
-                        <td><strong><?php echo number_format($b['total_price']); ?> VNĐ</strong></td>
-                        <td>
+                            <div class="booking-row-attraction">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <strong><?php echo htmlspecialchars($b['attraction_name'] ?? 'N/A'); ?></strong>
+                                <?php if (!empty($b['attraction_location'])): ?>
+                                <span class="location-text"><?php echo htmlspecialchars($b['attraction_location']); ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-row-middle">
+                        <div class="booking-row-detail">
+                            <span class="detail-label">Ngày</span>
+                            <span class="detail-value">
+                                <i class="fas fa-calendar"></i>
+                                <?php echo date('d/m/Y', strtotime($b['booking_date'])); ?>
+                            </span>
+                        </div>
+                        <div class="booking-row-detail">
+                            <span class="detail-label">Số người</span>
+                            <span class="detail-value"><strong><?php echo $b['number_of_people']; ?></strong></span>
+                        </div>
+                        <div class="booking-row-detail">
+                            <span class="detail-label">Tổng tiền</span>
+                            <span class="detail-value" style="color: #10b981; font-weight: 700;">
+                                <?php echo number_format($b['total_price']); ?> VNĐ
+                            </span>
+                        </div>
+                        <div class="booking-row-detail">
                             <span class="status-badge" style="background: <?php echo $statusColors[$b['status']]; ?>">
                                 <?php echo $statusNames[$b['status']]; ?>
                             </span>
-                        </td>
-                        <td>
-                            <?php if ($b['status'] === 'pending'): ?>
-                                <button class="action-btn btn-confirm" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'confirmed')">
-                                    <i class="fas fa-check"></i> Xác nhận
-                                </button>
-                                <button class="action-btn btn-cancel" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'cancelled')">
-                                    <i class="fas fa-times"></i> Hủy
-                                </button>
-                            <?php elseif ($b['status'] === 'confirmed'): ?>
-                                <button class="action-btn btn-complete" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'completed')">
-                                    <i class="fas fa-check-double"></i> Hoàn thành
-                                </button>
-                            <?php endif; ?>
-                            <button class="action-btn btn-delete" onclick="deleteBooking('<?php echo $b['booking_id']; ?>', '<?php echo htmlspecialchars($b['customer_name'], ENT_QUOTES); ?>')">
-                                <i class="fas fa-trash"></i> Xóa
+                        </div>
+                    </div>
+
+                    <div class="booking-row-actions">
+                        <?php if ($b['status'] === 'pending'): ?>
+                            <button class="action-btn btn-confirm" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'confirmed')" title="Xác nhận">
+                                <i class="fas fa-check"></i>
                             </button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                            <button class="action-btn btn-cancel" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'cancelled')" title="Hủy">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        <?php elseif ($b['status'] === 'confirmed'): ?>
+                            <button class="action-btn btn-complete" onclick="updateStatus('<?php echo $b['booking_id']; ?>', 'completed')" title="Hoàn thành">
+                                <i class="fas fa-check-double"></i>
+                            </button>
+                        <?php endif; ?>
+                        <button class="action-btn btn-delete" onclick="deleteBooking('<?php echo $b['booking_id']; ?>', '<?php echo htmlspecialchars($b['customer_name'], ENT_QUOTES); ?>')" title="Xóa">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
             <?php else: ?>
             <div class="no-data">
                 <i class="fas fa-calendar-times"></i>

@@ -38,6 +38,7 @@
 }
 
 @media (min-width: 768px) {
+
     .header,
     .admin-header {
         padding: 20px;
@@ -81,6 +82,7 @@
 }
 
 @media (min-width: 576px) {
+
     .stats-grid,
     .stats-container {
         grid-template-columns: repeat(3, 1fr);
@@ -88,6 +90,7 @@
 }
 
 @media (min-width: 768px) {
+
     .stats-grid,
     .stats-container {
         grid-template-columns: repeat(4, 1fr);
@@ -109,6 +112,7 @@
 }
 
 @media (min-width: 992px) {
+
     .stats-grid,
     .stats-container {
         grid-template-columns: repeat(6, 1fr);
@@ -272,7 +276,8 @@
 .filter-group select {
     width: 100%;
     padding: 12px;
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Prevent zoom on iOS */
 }
 
 @media (min-width: 576px) {
@@ -394,7 +399,8 @@
 .form-group select,
 .form-group textarea {
     padding: 12px;
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Prevent zoom on iOS */
     border-radius: 8px;
 }
 

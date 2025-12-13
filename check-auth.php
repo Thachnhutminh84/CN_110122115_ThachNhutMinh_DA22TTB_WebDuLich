@@ -1,112 +1,66 @@
 <?php
 /**
- * File kiểm tra đăng nhập và phân quyền
- * Include file này ở đầu mỗi trang cần bảo vệ
+ * File kiểm tra xác thực và phân quyền
  */
 
-// Bắt đầu session nếu chưa có
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-/**
- * Kiểm tra đã đăng nhập chưa
- */
-function isLoggedIn() {
-    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-}
-
-/**
- * Kiểm tra có phải admin không
- */
-function isAdmin() {
-    return isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-}
-
-/**
- * Kiểm tra có phải manager không
- */
-function isManager() {
-    return isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === 'manager';
-}
-
-/**
- * Kiểm tra có phải admin hoặc manager không
- */
-function isAdminOrManager() {
-    return isAdmin() || isManager();
-}
-
-/**
- * Kiểm tra có phải user thường không
- */
-function isUser() {
-    return isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === 'user';
-}
-
-/**
- * Yêu cầu đăng nhập - Chuyển đến trang đăng nhập nếu chưa đăng nhập
- */
+// Kiểm tra đã đăng nhập chưa
 function requireLogin() {
-    if (!isLoggedIn()) {
+    if (!isset($_SESSION['user_id'])) {
         header('Location: dang-nhap.php');
         exit;
     }
 }
 
-/**
- * Yêu cầu quyền admin - Chuyển đến trang chủ nếu không phải admin
- */
+// Kiểm tra quyền admin
 function requireAdmin() {
     requireLogin();
-    if (!isAdmin()) {
-        header('Location: index.php');
-        exit;
+    
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        die('Bạn không có quyền truy cập trang này!');
     }
 }
 
-/**
- * Yêu cầu quyền admin hoặc manager
- */
+// Kiểm tra quyền admin hoặc manager
 function requireAdminOrManager() {
     requireLogin();
-    if (!isAdminOrManager()) {
-        header('Location: index.php');
-        exit;
+    
+    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'manager'])) {
+        die('Bạn không có quyền truy cập trang này!');
     }
 }
 
-/**
- * Lấy thông tin user hiện tại
- */
+// Lấy thông tin user hiện tại
 function getCurrentUser() {
-    if (!isLoggedIn()) {
+    if (!isset($_SESSION['user_id'])) {
         return null;
     }
     
     return [
-        'id' => $_SESSION['user_id'] ?? null,
-        'username' => $_SESSION['username'] ?? null,
-        'full_name' => $_SESSION['full_name'] ?? null,
-        'email' => $_SESSION['email'] ?? null,
-        'role' => $_SESSION['role'] ?? null
+        'user_id' => $_SESSION['user_id'],
+        'username' => $_SESSION['username'] ?? '',
+        'email' => $_SESSION['email'] ?? '',
+        'full_name' => $_SESSION['full_name'] ?? '',
+        'role' => $_SESSION['role'] ?? 'user'
     ];
 }
 
-/**
- * Lấy tên vai trò bằng tiếng Việt
- */
-function getRoleName($role = null) {
-    if ($role === null) {
-        $role = $_SESSION['role'] ?? 'user';
-    }
-    
-    $roleNames = [
-        'admin' => 'Quản trị viên',
-        'manager' => 'Quản lý',
-        'user' => 'Người dùng'
-    ];
-    
-    return $roleNames[$role] ?? 'Người dùng';
+// Kiểm tra có phải admin không
+function isAdmin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+// Kiểm tra có phải manager không
+function isManager() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'manager';
+}
+
+// Kiểm tra đã đăng nhập chưa
+function isLoggedIn() {
+    return isset($_SESSION['user_id']);
+}
+
+// Kiểm tra có phải admin hoặc manager không
+function isAdminOrManager() {
+    return isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'manager']);
 }
 ?>
