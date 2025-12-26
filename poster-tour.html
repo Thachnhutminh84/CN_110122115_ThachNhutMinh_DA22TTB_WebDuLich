@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Tour Du Lịch Trà Vinh</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            height: 1200px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #11998e 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Background decoration */
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .poster::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 40px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .promo-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 10px;
+        }
+
+        /* Tour Cards */
+        .tour-section {
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            display: flex;
+        }
+
+        .tour-card.featured {
+            border: 3px solid #ffd700;
+        }
+
+        .tour-image {
+            width: 200px;
+            min-height: 180px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
+        }
+
+        .tour-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .tour-badge.hot { background: #ff6b6b; }
+        .tour-badge.best { background: #ffd700; color: #333; }
+        .tour-badge.new { background: #2ecc71; }
+
+        .tour-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tour-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .tour-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .tour-duration {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tour-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tour-includes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .include-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #666;
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .include-item i {
+            color: #11998e;
+        }
+
+        .tour-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tour-price {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-old {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price-new {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .price-note {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .book-btn {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(17,153,142,0.4);
+        }
+
+        /* Why Choose Section */
+        .why-section {
+            background: rgba(255,255,255,0.1);
+            margin: 20px 40px;
+            padding: 25px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .why-title {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .why-item {
+            text-align: center;
+            color: white;
+        }
+
+        .why-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+        }
+
+        .why-text {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .poster-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.3);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 13px;
+        }
+
+        .contact-item i {
+            color: #ffd700;
+        }
+
+        .hotline {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <div class="promo-badge">🔥 Ưu Đãi Đặc Biệt 2024</div>
+            <h1 class="main-title">Tour Du Lịch<br>Trà Vinh</h1>
+            <p class="subtitle">Trọn gói - Giá tốt - An toàn - Chuyên nghiệp</p>
+        </div>
+
+        <!-- Tour Cards -->
+        <div class="tour-section">
+            <!-- Tour 1 - Featured -->
+            <div class="tour-card featured">
+                <div class="tour-image" style="background: url('hinhanh/DulichtpTV/aobaom-02-1024x686.jpg') center/cover;">
+                    <span class="tour-badge best">⭐ Best Seller</span>
+                </div>
+                <div class="tour-content">
+                    <div>
+                        <div class="tour-header">
+                            <h3 class="tour-name">Tour Trà Vinh 2N1Đ</h3>
+                            <span class="tour-duration">2 Ngày 1 Đêm</span>
+                        </div>
+                        <p class="tour-desc">Khám phá trọn vẹn Ao Bà Om - Chùa Âng - Biển Ba Động. Trải nghiệm văn hóa Khmer độc đáo và thưởng thức ẩm thực đặc sản.</p>
+                        <div class="tour-includes">
+                            <span class="include-item"><i class="fas fa-bus"></i> Xe đưa đón</span>
+                            <span class="include-item"><i class="fas fa-hotel"></i> Khách sạn 3*</span>
+                            <span class="include-item"><i class="fas fa-utensils"></i> 3 bữa ăn</span>
+                            <span class="include-item"><i class="fas fa-user-tie"></i> HDV</span>
+                            <span class="include-item"><i class="fas fa-shield-alt"></i> Bảo hiểm</span>
+                        </div>
+                    </div>
+                    <div class="tour-footer">
+                        <div class="tour-price">
+                            <span class="price-old">1.800.000đ</span>
+                            <span class="price-new">1.490.000đ</span>
+                            <span class="price-note">/người</span>
+                        </div>
+                        <a href="#" class="book-btn">
+                            <i class="fas fa-calendar-check"></i> Đặt Ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour 2 -->
+            <div class="tour-card">
+                <div class="tour-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    🏖️
+                    <span class="tour-badge hot">🔥 Hot</span>
+                </div>
+                <div class="tour-content">
+                    <div>
+                        <div class="tour-header">
+                            <h3 class="tour-name">Tour Biển Ba Động 1 Ngày</h3>
+                            <span class="tour-duration">1 Ngày</span>
+                        </div>
+                        <p class="tour-desc">Tắm biển, thưởng thức hải sản tươi sống và khám phá làng chài.</p>
+                        <div class="tour-includes">
+                            <span class="include-item"><i class="fas fa-bus"></i> Xe đưa đón</span>
+                            <span class="include-item"><i class="fas fa-utensils"></i> Ăn trưa</span>
+                            <span class="include-item"><i class="fas fa-shield-alt"></i> Bảo hiểm</span>
+                        </div>
+                    </div>
+                    <div class="tour-footer">
+                        <div class="tour-price">
+                            <span class="price-old">650.000đ</span>
+                            <span class="price-new">490.000đ</span>
+                            <span class="price-note">/người</span>
+                        </div>
+                        <a href="#" class="book-btn">
+                            <i class="fas fa-calendar-check"></i> Đặt Ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour 3 -->
+            <div class="tour-card">
+                <div class="tour-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    🛕
+                    <span class="tour-badge new">Mới</span>
+                </div>
+                <div class="tour-content">
+                    <div>
+                        <div class="tour-header">
+                            <h3 class="tour-name">Tour Văn Hóa Khmer</h3>
+                            <span class="tour-duration">1 Ngày</span>
+                        </div>
+                        <p class="tour-desc">Tham quan các chùa Khmer cổ, tìm hiểu văn hóa và lễ hội truyền thống.</p>
+                        <div class="tour-includes">
+                            <span class="include-item"><i class="fas fa-bus"></i> Xe đưa đón</span>
+                            <span class="include-item"><i class="fas fa-user-tie"></i> HDV địa phương</span>
+                        </div>
+                    </div>
+                    <div class="tour-footer">
+                        <div class="tour-price">
+                            <span class="price-new">390.000đ</span>
+                            <span class="price-note">/người</span>
+                        </div>
+                        <a href="#" class="book-btn">
+                            <i class="fas fa-calendar-check"></i> Đặt Ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose -->
+        <div class="why-section">
+            <h3 class="why-title">✨ Tại Sao Chọn Chúng Tôi?</h3>
+            <div class="why-grid">
+                <div class="why-item">
+                    <div class="why-icon">💰</div>
+                    <p class="why-text">Giá Tốt Nhất</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">🛡️</div>
+                    <p class="why-text">An Toàn 100%</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">⭐</div>
+                    <p class="why-text">Chất Lượng Cao</p>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon">📞</div>
+                    <p class="why-text">Hỗ Trợ 24/7</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="poster-footer">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    dulich-travinh.edu.vn
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    booking@tvu.edu.vn
+                </div>
+            </div>
+            <div class="hotline">
+                <i class="fas fa-phone-alt"></i>
+                Hotline: 0294 3855 246
+            </div>
+        </div>
+    </div>
+</body>
+</html>

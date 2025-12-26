@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Dịch Vụ Du Lịch Trà Vinh</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            height: 1200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Decorative circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+        .circle-1 { width: 300px; height: 300px; top: -100px; right: -100px; }
+        .circle-2 { width: 200px; height: 200px; bottom: 100px; left: -80px; }
+        .circle-3 { width: 150px; height: 150px; top: 40%; right: -50px; }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 40px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 30px;
+        }
+
+        .service-icon.hotel { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .service-icon.car { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .service-icon.guide { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
+        .service-icon.food { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
+        .service-icon.ticket { background: linear-gradient(135deg, #a8edea, #fed6e3); color: #333; }
+        .service-icon.support { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+
+        .service-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .service-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .service-features {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .feature i {
+            color: #667eea;
+        }
+
+        /* Promo Section */
+        .promo-section {
+            background: rgba(255,255,255,0.1);
+            margin: 20px 40px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+
+        .promo-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .promo-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .promo-desc {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .promo-code {
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            display: inline-block;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .contact-card i {
+            font-size: 24px;
+            color: #ffd700;
+        }
+
+        .contact-text {
+            font-size: 13px;
+        }
+
+        .contact-text strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        /* Footer */
+        .poster-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.3);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .footer-brand i {
+            font-size: 30px;
+            color: #ffd700;
+        }
+
+        .footer-brand span {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #ffd700;
+            color: #333;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Decorative circles -->
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-icon">🎯</div>
+            <h1 class="main-title">Dịch Vụ Du Lịch</h1>
+            <p class="subtitle">Trọn gói dịch vụ cho chuyến đi hoàn hảo của bạn</p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="services-grid">
+            <!-- Hotel -->
+            <div class="service-card">
+                <div class="service-icon hotel">
+                    <i class="fas fa-hotel"></i>
+                </div>
+                <h3 class="service-name">Đặt Phòng Khách Sạn</h3>
+                <p class="service-desc">Hệ thống khách sạn từ 2-5 sao, homestay, resort ven biển</p>
+                <span class="service-price">Từ 300.000đ/đêm</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> Wifi Free</span>
+                    <span class="feature"><i class="fas fa-check"></i> Ăn sáng</span>
+                </div>
+            </div>
+
+            <!-- Car Rental -->
+            <div class="service-card">
+                <div class="service-icon car">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="service-name">Thuê Xe Du Lịch</h3>
+                <p class="service-desc">Xe 4-45 chỗ, tài xế kinh nghiệm, xe đời mới</p>
+                <span class="service-price">Từ 800.000đ/ngày</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> Xăng dầu</span>
+                    <span class="feature"><i class="fas fa-check"></i> Tài xế</span>
+                </div>
+            </div>
+
+            <!-- Guide -->
+            <div class="service-card">
+                <div class="service-icon guide">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3 class="service-name">Hướng Dẫn Viên</h3>
+                <p class="service-desc">HDV địa phương am hiểu văn hóa, lịch sử Khmer</p>
+                <span class="service-price">Từ 500.000đ/ngày</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> Tiếng Việt</span>
+                    <span class="feature"><i class="fas fa-check"></i> Tiếng Anh</span>
+                </div>
+            </div>
+
+            <!-- Food -->
+            <div class="service-card">
+                <div class="service-icon food">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3 class="service-name">Đặt Bàn Nhà Hàng</h3>
+                <p class="service-desc">Nhà hàng đặc sản địa phương, hải sản tươi sống</p>
+                <span class="service-price">Từ 150.000đ/người</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> Set menu</span>
+                    <span class="feature"><i class="fas fa-check"></i> À la carte</span>
+                </div>
+            </div>
+
+            <!-- Ticket -->
+            <div class="service-card">
+                <div class="service-icon ticket">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h3 class="service-name">Vé Tham Quan</h3>
+                <p class="service-desc">Vé vào cổng các điểm du lịch, khu vui chơi</p>
+                <span class="service-price">Từ 20.000đ/vé</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> E-ticket</span>
+                    <span class="feature"><i class="fas fa-check"></i> Combo</span>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="service-card">
+                <div class="service-icon support">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="service-name">Hỗ Trợ 24/7</h3>
+                <p class="service-desc">Tư vấn, hỗ trợ khẩn cấp mọi lúc mọi nơi</p>
+                <span class="service-price">Miễn Phí</span>
+                <div class="service-features">
+                    <span class="feature"><i class="fas fa-check"></i> Hotline</span>
+                    <span class="feature"><i class="fas fa-check"></i> Zalo/FB</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promo -->
+        <div class="promo-section">
+            <span class="promo-badge">🎁 Ưu Đãi Đặc Biệt</span>
+            <h3 class="promo-title">Giảm 15% Combo Dịch Vụ</h3>
+            <p class="promo-desc">Áp dụng khi đặt từ 3 dịch vụ trở lên</p>
+            <div class="promo-code">TRAVINH2024</div>
+        </div>
+
+        <!-- Contact -->
+        <div class="contact-section">
+            <div class="contact-card">
+                <i class="fas fa-phone-alt"></i>
+                <div class="contact-text">
+                    Hotline
+                    <strong>0294 3855 246</strong>
+                </div>
+            </div>
+            <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <div class="contact-text">
+                    Email
+                    <strong>dichvu@tvu.edu.vn</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="poster-footer">
+            <div class="footer-brand">
+                <i class="fas fa-gopuram"></i>
+                <span>Du Lịch Trà Vinh</span>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-link"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Ẩm Thực Trà Vinh</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            height: 1200px;
+            background: linear-gradient(180deg, #8B4513 0%, #D2691E 30%, #CD853F 70%, #8B4513 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Decorative food pattern */
+        .poster::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='50' font-size='30' fill='%23ffffff' fill-opacity='0.03'%3E🍜%3C/text%3E%3Ctext x='60' y='90' font-size='25' fill='%23ffffff' fill-opacity='0.03'%3E🥢%3C/text%3E%3C/svg%3E");
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 40px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .food-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .main-title span {
+            color: #ffd700;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Food Grid */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px 40px;
+        }
+
+        .food-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .food-card.featured {
+            grid-column: span 2;
+            display: flex;
+        }
+
+        .food-image {
+            height: 140px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
+        }
+
+        .food-card.featured .food-image {
+            width: 45%;
+            height: auto;
+            min-height: 180px;
+        }
+
+        .food-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .food-tag.special { background: #ffd700; color: #333; }
+        .food-tag.popular { background: #2ecc71; }
+
+        .food-content {
+            padding: 15px;
+        }
+
+        .food-card.featured .food-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .food-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .food-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .food-price {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .food-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #f39c12;
+        }
+
+        /* Specialties Section */
+        .specialties {
+            background: rgba(0,0,0,0.3);
+            margin: 20px 40px;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .specialties-title {
+            text-align: center;
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .specialty-list {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .specialty-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 20px;
+            border-radius: 30px;
+            color: white;
+        }
+
+        .specialty-item span {
+            font-size: 24px;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 25px 40px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #8B4513;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+        }
+
+        /* Footer */
+        .poster-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            color: white;
+        }
+
+        .footer-info h4 {
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .footer-info p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #ffd700;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <div class="food-icon">🍜</div>
+            <div class="badge">
+                <i class="fas fa-utensils"></i>
+                Đặc Sản Khmer
+            </div>
+            <h1 class="main-title">Ẩm Thực <span>Trà Vinh</span></h1>
+            <p class="subtitle">Hương vị độc đáo của vùng đất Khmer Nam Bộ</p>
+        </div>
+
+        <!-- Food Grid -->
+        <div class="food-grid">
+            <!-- Featured -->
+            <div class="food-card featured">
+                <div class="food-image" style="background: linear-gradient(135deg, #e17055, #fdcb6e);">
+                    🍜
+                    <span class="food-tag special">Đặc Sản #1</span>
+                </div>
+                <div class="food-content">
+                    <h3 class="food-name">Bún Nước Lèo</h3>
+                    <p class="food-desc">Món ăn đặc trưng nhất của Trà Vinh với nước lèo đậm đà từ mắm bò hóc, ăn kèm rau sống và thịt heo quay giòn.</p>
+                    <span class="food-price">35.000đ - 50.000đ</span>
+                    <div class="food-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span style="color: #666; margin-left: 5px;">4.9/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="food-card">
+                <div class="food-image" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">
+                    🥟
+                    <span class="food-tag popular">Phổ Biến</span>
+                </div>
+                <div class="food-content">
+                    <h3 class="food-name">Bánh Tét Trà Cuôn</h3>
+                    <p class="food-desc">Bánh tét nổi tiếng với nhân đậu xanh, thịt mỡ béo ngậy.</p>
+                    <span class="food-price">80.000đ/đòn</span>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="food-card">
+                <div class="food-image" style="background: linear-gradient(135deg, #55a3ff, #003d82);">
+                    🦀
+                    <span class="food-tag">Hải Sản</span>
+                </div>
+                <div class="food-content">
+                    <h3 class="food-name">Cua Biển Ba Động</h3>
+                    <p class="food-desc">Cua biển tươi ngon, thịt chắc ngọt từ vùng biển Ba Động.</p>
+                    <span class="food-price">250.000đ/kg</span>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="food-card">
+                <div class="food-image" style="background: linear-gradient(135deg, #ffeaa7, #fdcb6e);">
+                    🍚
+                    <span class="food-tag special">Truyền Thống</span>
+                </div>
+                <div class="food-content">
+                    <h3 class="food-name">Cốm Dẹp</h3>
+                    <p class="food-desc">Đặc sản Khmer làm từ nếp non, thơm ngon béo ngậy.</p>
+                    <span class="food-price">50.000đ/gói</span>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="food-card">
+                <div class="food-image" style="background: linear-gradient(135deg, #ff7675, #d63031);">
+                    🥤
+                    <span class="food-tag popular">Giải Khát</span>
+                </div>
+                <div class="food-content">
+                    <h3 class="food-name">Nước Thốt Nốt</h3>
+                    <p class="food-desc">Thức uống mát lành từ cây thốt nốt đặc trưng Khmer.</p>
+                    <span class="food-price">15.000đ/ly</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Specialties -->
+        <div class="specialties">
+            <h3 class="specialties-title">🌟 Món Ngon Khác</h3>
+            <div class="specialty-list">
+                <div class="specialty-item">
+                    <span>🍢</span> Bánh Canh Bến Có
+                </div>
+                <div class="specialty-item">
+                    <span>🥘</span> Lẩu Mắm
+                </div>
+                <div class="specialty-item">
+                    <span>🍰</span> Bánh Ống
+                </div>
+                <div class="specialty-item">
+                    <span>🍖</span> Dừa Sáp
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <a href="#" class="cta-btn">
+                <i class="fas fa-search"></i>
+                Tìm Quán Ăn Ngon
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="poster-footer">
+            <div class="footer-info">
+                <h4>🍜 Ẩm Thực Trà Vinh</h4>
+                <p>Khám phá hương vị Khmer độc đáo</p>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

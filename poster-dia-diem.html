@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Địa Điểm Du Lịch Trà Vinh</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            height: 1200px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Decorative Pattern */
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 40px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,215,0,0.2);
+            color: #ffd700;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .main-title span {
+            color: #ffd700;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Attractions Grid */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px 40px;
+        }
+
+        .attraction-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .attraction-card.featured {
+            grid-column: span 2;
+        }
+
+        .card-image {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .attraction-card.featured .card-image {
+            height: 200px;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7) 100%);
+        }
+
+        .card-image i {
+            font-size: 50px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .card-badge.green { background: #2ecc71; }
+        .card-badge.blue { background: #3498db; }
+        .card-badge.orange { background: #f39c12; }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .meta-item i {
+            color: #ffd700;
+            font-size: 12px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.2);
+            margin: 20px 40px;
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 20px 40px 30px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1e3c72;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+        }
+
+        /* Footer */
+        .poster-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.4);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .footer-logo i {
+            font-size: 24px;
+            color: #ffd700;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .qr-placeholder {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <div class="badge">
+                <i class="fas fa-map-marked-alt"></i>
+                Top Điểm Đến 2024
+            </div>
+            <h1 class="main-title">Địa Điểm <span>Du Lịch</span></h1>
+            <p class="subtitle">Khám phá những địa danh nổi tiếng nhất của vùng đất Khmer Nam Bộ</p>
+        </div>
+
+        <!-- Attractions Grid -->
+        <div class="attractions-grid">
+            <!-- Featured Card -->
+            <div class="attraction-card featured">
+                <div class="card-image" style="background: url('hinhanh/DulichtpTV/aobaom-02-1024x686.jpg') center/cover;">
+                    <span class="card-badge">Nổi Bật</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🌳 Ao Bà Om</h3>
+                    <p class="card-desc">Thắng cảnh quốc gia với truyền thuyết về cuộc thi đắp đập của phụ nữ Khmer. Hồ nước trong xanh được bao quanh bởi hàng trăm cây sao cổ thụ.</p>
+                    <div class="card-meta">
+                        <span class="meta-item"><i class="fas fa-map-marker-alt"></i> TP. Trà Vinh</span>
+                        <span class="meta-item"><i class="fas fa-star"></i> 4.8/5</span>
+                        <span class="meta-item"><i class="fas fa-clock"></i> 2-3 giờ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="attraction-card">
+                <div class="card-image" style="background: url('hinhanh/DulichtpTV/maxresdefault.jpg') center/cover;">
+                    <span class="card-badge green">Di Tích</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🛕 Chùa Âng</h3>
+                    <p class="card-desc">Ngôi chùa Khmer cổ kính nhất với niên đại hơn 1000 năm lịch sử.</p>
+                    <div class="card-meta">
+                        <span class="meta-item"><i class="fas fa-star"></i> 4.9/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="attraction-card">
+                <div class="card-image" style="background: url('hinhanh/DulichtpTV/Kham-pha-Khu-du-lich-Bien-Ba-Dong-Tra-Vinh-2022.jpg.webp') center/cover;">
+                    <span class="card-badge blue">Biển</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🏖️ Biển Ba Động</h3>
+                    <p class="card-desc">Bãi biển hoang sơ với cát trắng và nước trong xanh tuyệt đẹp.</p>
+                    <div class="card-meta">
+                        <span class="meta-item"><i class="fas fa-star"></i> 4.7/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="attraction-card">
+                <div class="card-image">
+                    <i class="fas fa-place-of-worship"></i>
+                    <span class="card-badge orange">Tâm Linh</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🙏 Chùa Hang</h3>
+                    <p class="card-desc">Ngôi chùa độc đáo với kiến trúc hang động ấn tượng.</p>
+                    <div class="card-meta">
+                        <span class="meta-item"><i class="fas fa-star"></i> 4.6/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="attraction-card">
+                <div class="card-image">
+                    <i class="fas fa-tree"></i>
+                    <span class="card-badge green">Sinh Thái</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🌴 Cồn Chim</h3>
+                    <p class="card-desc">Khu du lịch sinh thái với hệ động thực vật phong phú.</p>
+                    <div class="card-meta">
+                        <span class="meta-item"><i class="fas fa-star"></i> 4.5/5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-section">
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Địa Điểm</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">140+</div>
+                <div class="stat-label">Chùa Khmer</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Di Tích QG</div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <a href="#" class="cta-btn">
+                <i class="fas fa-compass"></i>
+                Khám Phá Tất Cả
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="poster-footer">
+            <div class="footer-logo">
+                <i class="fas fa-gopuram"></i>
+                <div>
+                    <strong style="color: #ffd700;">Du Lịch Trà Vinh</strong>
+                    <p class="footer-text">dulich-travinh.edu.vn</p>
+                </div>
+            </div>
+            <div class="qr-placeholder">
+                <span>QR<br>Code</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
